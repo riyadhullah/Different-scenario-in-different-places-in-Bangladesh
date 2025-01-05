@@ -1,177 +1,147 @@
-/*
- * GLUT Shapes Demo
- *
- * Written by Nigel Stewart November 2003
- *
- * This program is test harness for the sphere, cone
- * and torus shapes in GLUT.
- *
- * Spinning wireframe and smooth shaded shapes are
- * displayed until the ESC or q key is pressed.  The
- * number of geometry stacks and slices can be adjusted
- * using the + and - keys.
- */
+#include <windows.h>  // for MS Windows
+#include <GL/glut.h>  // GLUT, include glu.h and gl.h
+#include<math.h>
+# define PI           3.14159265358979323846
 
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
-#include <stdlib.h>
-
-static int slices = 16;
-static int stacks = 16;
-
-/* GLUT callback Handlers */
-
-static void resize(int width, int height)
-{
-    const float ar = (float) width / (float) height;
-
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glFrustum(-ar, ar, -1.0, 1.0, 2.0, 100.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity() ;
+void initGL() {
+	// Set "clearing" or background color
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Black and opaque
 }
 
-static void display(void)
+void wheelR(float x, float y, float radius,float r,float g,float b)
 {
-    const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-    const double a = t*90.0;
+    int triangleAmount = 100; //# of triangles used to draw circle
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glColor3d(1,0,0);
-
-    glPushMatrix();
-        glTranslated(-2.4,1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutSolidSphere(1,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(0,1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutSolidCone(1,1,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(2.4,1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutSolidTorus(0.2,0.8,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(-2.4,-1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutWireSphere(1,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(0,-1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutWireCone(1,1,slices,stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslated(2.4,-1.2,-6);
-        glRotated(60,1,0,0);
-        glRotated(a,0,0,1);
-        glutWireTorus(0.2,0.8,slices,stacks);
-    glPopMatrix();
-
-    glutSwapBuffers();
-}
-
-
-static void key(unsigned char key, int x, int y)
-{
-    switch (key)
+    GLfloat twicePi = 2.0f * PI;
+    glColor3f(r, g, b); // Set color
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(x, y); // center of circle
+    for(int i = 0; i <= triangleAmount; i++)
     {
-        case 27 :
-        case 'q':
-            exit(0);
-            break;
-
-        case '+':
-            slices++;
-            stacks++;
-            break;
-
-        case '-':
-            if (slices>3 && stacks>3)
-            {
-                slices--;
-                stacks--;
-            }
-            break;
+        glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)), y + (radius * sin(i * twicePi / triangleAmount)));
     }
+    glEnd();
+    // Draw spokes
+    int spokeCount=6;
+    glColor3f(0.0f, 0.0f, 0.0f); // Set color for spokes
+    for (int i = 0; i < spokeCount; i++)
+    {
+        float angle = i * twicePi / spokeCount;
+        float spokeX = x + radius * cos(angle);
+        float spokeY = y + radius * sin(angle);
 
-    glutPostRedisplay();
+        glLineWidth(1);
+        glBegin(GL_LINES);
+        glVertex2f(x, y); // Center
+        glVertex2f(spokeX, spokeY); // Edge
+        glEnd();
+    }
 }
 
-static void idle(void)
+
+void truck() // id: truck01
 {
-    glutPostRedisplay();
+    glBegin(GL_POLYGON); //square body
+    glColor3ub(142, 39, 3);
+
+	glVertex2f(-14.55, 36.7333955619761);
+	glVertex2f(-14.5, 16);
+	glVertex2f(8, 16);
+	glVertex2f(7.944204387028, 36.7770734797732);
+
+    glEnd();
+
+    glBegin(GL_POLYGON); //front body
+    glColor3ub(101, 111, 118);
+
+    glVertex2f(8, 30.8369194973632);
+    glVertex2f(12.0708241758237, 30.9242324949699);
+    glVertex2f(15.4541585552863, 25);
+    glVertex2f(19,25);
+    glVertex2f(19, 16.0358079507589);
+	glVertex2f(8, 16);
+
+    glEnd();
+
+    glBegin(GL_POLYGON); //Window
+    glColor3ub(0,0,0);
+
+    glVertex2f(7.963909925574, 29.4391592510257);
+    glVertex2f(12.0421670939571, 29.4828612076677);
+    glVertex2f(14.2487623976882, 25);
+    glVertex2f(7.9758740837369, 25);
+
+    glEnd();
+
+    wheelR(10, 16,4,0,0,0); //front wheel
+    wheelR(10, 16,2.5,1,1,1);
+
+    wheelR(-9, 16,4,0,0,0); //back wheel
+    wheelR(-9, 16,2.5,1,1,1);
+
 }
 
-const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
-const GLfloat light_diffuse[]  = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat light_position[] = { 2.0f, 5.0f, 5.0f, 0.0f };
-
-const GLfloat mat_ambient[]    = { 0.7f, 0.7f, 0.7f, 1.0f };
-const GLfloat mat_diffuse[]    = { 0.8f, 0.8f, 0.8f, 1.0f };
-const GLfloat mat_specular[]   = { 1.0f, 1.0f, 1.0f, 1.0f };
-const GLfloat high_shininess[] = { 100.0f };
-
-/* Program entry point */
-
-int main(int argc, char *argv[])
+void road()
 {
-    glutInit(&argc, argv);
-    glutInitWindowSize(640,480);
-    glutInitWindowPosition(10,10);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+    glBegin(GL_POLYGON);
+    glColor3ub(132,132,132);
 
-    glutCreateWindow("GLUT Shapes");
+	glVertex2f(-90, -20);
+	glVertex2f(90, -20);
+	glVertex2f(90, 40);
+	glVertex2f(-90,40);
 
-    glutReshapeFunc(resize);
-    glutDisplayFunc(display);
-    glutKeyboardFunc(key);
-    glutIdleFunc(idle);
+    glEnd();
 
-    glClearColor(1,1,1,1);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    bool check =true;
+    glLineWidth(10);
+    glBegin(GL_LINES);
+    for(int i = -90; i<90; i+=10)
+    {
+        if(check)
+        {
+            glColor3ub(0,0,0);
+            check = !check;
+        }
+        else if(!check)
+        {
+            glColor3ub(145, 132, 8);
+            check = !check;
+        }
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+        glVertex2f(i,-20);
+        glVertex2f(i+10,-20);
 
-    glEnable(GL_LIGHT0);
-    glEnable(GL_NORMALIZE);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_LIGHTING);
+        glVertex2f(i,40);
+        glVertex2f(i+10,40);
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  light_ambient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  light_diffuse);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+        if(!check)
+        {
+            glColor3ub(255,255,255);
+            glVertex2f(i+5,10);
+            glVertex2f(i+15,10);
+        }
+    }
+    glEnd();
+}
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+void display() {
+	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
-    glutMainLoop();
+    road();
+    truck();
 
-    return EXIT_SUCCESS;
+	glFlush();  // Render now
+}
+
+
+int main(int argc, char** argv) {
+	glutInit(&argc, argv);          // Initialize GLUT
+	glutCreateWindow("Vertex, Primitive & Color");  // Create window with the given title
+	glutInitWindowSize(320, 320);   // Set the window's initial width & height
+	glutDisplayFunc(display);       // Register callback handler for window re-paint event
+	initGL();
+	gluOrtho2D(-90,90,-30,150);                      // Our own OpenGL initialization
+	glutMainLoop();                 // Enter the event-processing loop
+	return 0;
 }
