@@ -1,7 +1,8 @@
 # depslib dependency file v1.0
-1736055063 source:e:\class\8th semester\graphics\project\different-scenario-in-different-places-in-bangladesh\main.cpp
+1736226085 source:e:\class\8th semester\graphics\project\different-scenario-in-different-places-in-bangladesh\main.cpp
 	<windows.h>
 	<GL/glut.h>
+	<math.h>
 
 1526093414 c:\program files\codeblocks\mingw\x86_64-w64-mingw32\include\windows.h
 	<_mingw.h>
@@ -872,4 +873,7 @@
 
 1526093414 c:\program files\codeblocks\mingw\x86_64-w64-mingw32\include\gl\glu.h
 	<GL/gl.h>
+
+1526093416 c:\program files\codeblocks\mingw\x86_64-w64-mingw32\include\math.h
+	<crtdefs.h>
 

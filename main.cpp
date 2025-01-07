@@ -37,10 +37,65 @@ void wheelR(float x, float y, float radius,float r,float g,float b)
         glEnd();
     }
 }
+void car()
+{
+    glBegin(GL_POLYGON); //square body
+    glColor3ub(58, 58, 77);
 
+	glVertex2f(-77.7, -7.1);
+	glVertex2f(-77.7, -22.2);
+	glVertex2f(-38.4046152581465, -22.2);
+	glVertex2f(-36.4675872016821, -18.2858234271046);
+	glVertex2f(-39.6055726531544, -13.3);
+	glVertex2f(-49.0582695687007, -13.3);
+	glVertex2f(-52.312476703561, -7.1);
+
+	glEnd();
+
+	glBegin(GL_POLYGON); //front window
+    glColor3ub(0,0,0);
+
+	glVertex2f(-61.65, -8.7202527778976);
+	glVertex2f(-53.6296557819568, -8.7202527778976);
+	glVertex2f(-51.0340381862945, -14.2);
+	glVertex2f(-61.65, -14.2);
+
+	glEnd();
+
+	glBegin(GL_POLYGON); //back window
+    glColor3ub(0,0,0);
+
+	glVertex2f(-75.3, -14.3296923561362);
+	glVertex2f(-65.755451415424, -14.3296923561362);
+	glVertex2f(-65.755451415424, -8.5431125806901);
+	glVertex2f(-75.3, -8.6612060454951);
+
+	glEnd();
+
+	glLineWidth(3);
+	glBegin(GL_LINES); //handle
+    glColor3ub(0,0,0);
+
+
+	glVertex2f(-70.4817998731972, -16.25);
+	glVertex2f(-66.2590787101048, -16.25);
+
+	glVertex2f(-55.411721593904, -16.25);
+	glVertex2f(-51.2664815530702, -16.25);
+
+	glEnd();
+
+	wheelR(-71.0629082901365, -22.7733750896956,4,0,0,0); //front wheel
+    wheelR(-71.0629082901365, -22.7733750896956,2.5,1,1,1);
+
+    wheelR(-48.55464227402, -22.6552816248906,4,0,0,0); //back wheel
+    wheelR(-48.55464227402, -22.6552816248906,2.5,1,1,1);
+}
 
 void truck() // id: truck01
 {
+    glPushMatrix();
+    glTranslatef(0.0f, -10.0f,0.0f);
     glBegin(GL_POLYGON); //square body
     glColor3ub(142, 39, 3);
 
@@ -79,10 +134,15 @@ void truck() // id: truck01
     wheelR(-9, 16,4,0,0,0); //back wheel
     wheelR(-9, 16,2.5,1,1,1);
 
+    glPopMatrix();
+    glutSwapBuffers();
 }
 
-void road()
+void road() // id: road01
 {
+    glPushMatrix();
+    glTranslatef(0.0f, -10.0f,0.0f);
+
     glBegin(GL_POLYGON);
     glColor3ub(132,132,132);
 
@@ -123,6 +183,9 @@ void road()
         }
     }
     glEnd();
+
+    glPopMatrix();
+    glutSwapBuffers();
 }
 
 void display() {
@@ -130,6 +193,7 @@ void display() {
 
     road();
     truck();
+    car();
 
 	glFlush();  // Render now
 }
@@ -138,7 +202,7 @@ void display() {
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);          // Initialize GLUT
 	glutCreateWindow("Vertex, Primitive & Color");  // Create window with the given title
-	glutInitWindowSize(320, 320);   // Set the window's initial width & height
+	glutInitWindowSize(500, 1000);   // Set the window's initial width & height
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
 	initGL();
 	gluOrtho2D(-90,90,-30,150);                      // Our own OpenGL initialization
