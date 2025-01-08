@@ -3,6 +3,11 @@
 #include<math.h>
 # define PI           3.14159265358979323846
 
+void change()
+{
+
+}
+
 void initGL() {
 	// Set "clearing" or background color
 	glClearColor(0.4f, 0.698f, 0.996f, 1.0f);
@@ -252,7 +257,7 @@ void railTrack()
 
     glEnd();
 
-    glLineWidth(3);
+    glLineWidth(5);
     glBegin(GL_LINES);
     glColor3ub(0,0,00);
 
@@ -262,33 +267,39 @@ void railTrack()
 	glVertex2f(-90, 38);
 	glVertex2f(90, 38);
 
-	for(int i = -90; i<90; i+=8)
+    glEnd();
+
+    glLineWidth(4);
+    glBegin(GL_LINES);
+
+    for(int i = -90; i<90; i+=5)
     {
         glVertex2f(i, 33);
         glVertex2f(i+3, 38);
     }
-
     glEnd();
 }
 
 void train()
 {
     railTrack();
+
+    //front bogie ______________________________________________________
     circle(25,35,1.5,0,0,0,false);
     circle(45,35,1.5,0,0,0,false);
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_POLYGON);    //body
     glColor3ub(43, 50, 54);
 
 	glVertex2f(20,35);
 	glVertex2f(20, 46);
-	glVertex2f(24, 50);
+	glVertex2f(22, 50);
 	glVertex2f(50, 50);
 	glVertex2f(50, 35);
 
     glEnd();
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_POLYGON);    //up blue line
     glColor3ub(65, 90, 173);
 
 	glVertex2f(24, 48);
@@ -298,7 +309,17 @@ void train()
 
     glEnd();
 
-    glBegin(GL_POLYGON);
+    glBegin(GL_POLYGON);    //low blue line
+    glColor3ub(65, 90, 173);
+
+	glVertex2f(22, 39);
+	glVertex2f(22, 37);
+	glVertex2f(49, 37);
+	glVertex2f(49, 39);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //front door
     glColor3ub(0,0,0);
 
 	glVertex2f(21, 46);
@@ -308,6 +329,115 @@ void train()
 
     glEnd();
 
+    glBegin(GL_POLYGON);    //back door
+    glColor3ub(0,0,0);
+
+	glVertex2f(46.5, 38);
+	glVertex2f(49, 38);
+	glVertex2f(49, 48);
+	glVertex2f(46.5, 48);
+
+    glEnd();
+
+    for(int i =24; i<45; i+=6)  //window
+    {
+        glBegin(GL_POLYGON);
+        glColor3ub(0,0,0);
+
+        glVertex2f(i, 41);
+        glVertex2f(i, 45);
+        glVertex2f(i+4, 45);
+        glVertex2f(i+4, 41);
+
+        glEnd();
+    }
+
+    glBegin(GL_POLYGON);    //tail
+    glColor3ub(0,0,0);
+
+	glVertex2f(50, 41);
+	glVertex2f(53, 41);
+	glVertex2f(53, 39);
+	glVertex2f(50, 39);
+
+    glEnd();
+
+    //front bogie ends ______________________________________________________
+
+
+    //back bogie ______________________________________________________
+    glPushMatrix();
+    glTranslatef(33.0f, 0.0f,0.0f);
+
+    circle(25,35,1.5,0,0,0,false);
+    circle(45,35,1.5,0,0,0,false);
+
+    glBegin(GL_POLYGON);    //body
+    glColor3ub(43, 50, 54);
+
+	glVertex2f(20,35);
+	glVertex2f(20, 50);
+	glVertex2f(50, 50);
+	glVertex2f(50, 35);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //up blue line
+    glColor3ub(65, 90, 173);
+
+	glVertex2f(21, 48);
+	glVertex2f(21, 49);
+	glVertex2f(49, 49);
+	glVertex2f(49, 48);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //low blue line
+    glColor3ub(65, 90, 173);
+
+	glVertex2f(21, 39);
+	glVertex2f(21, 37);
+	glVertex2f(49, 37);
+	glVertex2f(49, 39);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //front door
+    glColor3ub(0,0,0);
+
+	glVertex2f(20.5, 48);
+	glVertex2f(23, 48);
+	glVertex2f(23, 38);
+	glVertex2f(20.5, 38);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //back door
+    glColor3ub(0,0,0);
+
+	glVertex2f(46.5, 38);
+	glVertex2f(49, 38);
+	glVertex2f(49, 48);
+	glVertex2f(46.5, 48);
+
+    glEnd();
+
+    for(int i =24; i<45; i+=6)  //window
+    {
+        glBegin(GL_POLYGON);
+        glColor3ub(0,0,0);
+
+        glVertex2f(i, 41);
+        glVertex2f(i, 45);
+        glVertex2f(i+4, 45);
+        glVertex2f(i+4, 41);
+
+        glEnd();
+    }
+
+    glPopMatrix();
+    glutSwapBuffers();
+    //back bogie ends ______________________________________________________
 
 }
 
