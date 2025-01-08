@@ -5,10 +5,10 @@
 
 void initGL() {
 	// Set "clearing" or background color
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Black and opaque
+	glClearColor(0.4f, 0.698f, 0.996f, 1.0f);
 }
 
-void wheelR(float x, float y, float radius,float r,float g,float b)
+void circle(float x, float y, float radius,float r,float g,float b, bool wheel)
 {
     int triangleAmount = 100; //# of triangles used to draw circle
 
@@ -21,22 +21,51 @@ void wheelR(float x, float y, float radius,float r,float g,float b)
         glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)), y + (radius * sin(i * twicePi / triangleAmount)));
     }
     glEnd();
-    // Draw spokes
-    int spokeCount=6;
-    glColor3f(0.0f, 0.0f, 0.0f); // Set color for spokes
-    for (int i = 0; i < spokeCount; i++)
-    {
-        float angle = i * twicePi / spokeCount;
-        float spokeX = x + radius * cos(angle);
-        float spokeY = y + radius * sin(angle);
 
-        glLineWidth(1);
-        glBegin(GL_LINES);
-        glVertex2f(x, y); // Center
-        glVertex2f(spokeX, spokeY); // Edge
-        glEnd();
+    if(wheel)
+    {
+        // Draw spokes
+        int spokeCount=6;
+        glColor3f(0.0f, 0.0f, 0.0f); // Set color for spokes
+        for (int i = 0; i < spokeCount; i++)
+        {
+            float angle = i * twicePi / spokeCount;
+            float spokeX = x + radius * cos(angle);
+            float spokeY = y + radius * sin(angle);
+
+            glLineWidth(1);
+            glBegin(GL_LINES);
+            glVertex2f(x, y); // Center
+            glVertex2f(spokeX, spokeY); // Edge
+            glEnd();
+        }
     }
 }
+
+void sun() //id: sun01
+{
+	circle(0, 120,8,255,255,0,false);
+}
+
+void cloud()
+{
+    circle(-57.3372072570531, 112.1502599137751,8,203, 203, 203,false);
+    circle(-51.2773820914892, 122.0399124341394,8,203, 203, 203,false);
+    circle(-46.2165875917974, 116.1712839965521,8,203, 203, 203,false);
+    circle(-60, 120,8,203, 203, 203,false);
+
+    glPushMatrix();
+    glTranslatef(100.0f, -5.0f,0.0f);
+
+    circle(-57.3372072570531, 112.1502599137751,8,203, 203, 203,false);
+    circle(-51.2773820914892, 122.0399124341394,8,203, 203, 203,false);
+    circle(-46.2165875917974, 116.1712839965521,8,203, 203, 203,false);
+    circle(-60, 120,8,203, 203, 203,false);
+    glPopMatrix();
+
+
+}
+
 void car()
 {
     glBegin(GL_POLYGON); //square body
@@ -85,11 +114,11 @@ void car()
 
 	glEnd();
 
-	wheelR(-71.0629082901365, -22.7733750896956,4,0,0,0); //front wheel
-    wheelR(-71.0629082901365, -22.7733750896956,2.5,1,1,1);
+	circle(-71.0629082901365, -22.7733750896956,4,0,0,0,false); //front wheel
+    circle(-71.0629082901365, -22.7733750896956,2.5,1,1,1,true);
 
-    wheelR(-48.55464227402, -22.6552816248906,4,0,0,0); //back wheel
-    wheelR(-48.55464227402, -22.6552816248906,2.5,1,1,1);
+    circle(-48.55464227402, -22.6552816248906,4,0,0,0,false); //back wheel
+    circle(-48.55464227402, -22.6552816248906,2.5,1,1,1,true);
 }
 
 void truck() // id: truck01
@@ -128,11 +157,11 @@ void truck() // id: truck01
 
     glEnd();
 
-    wheelR(10, 16,4,0,0,0); //front wheel
-    wheelR(10, 16,2.5,1,1,1);
+    circle(10, 16,4,0,0,0,false); //front wheel
+    circle(10, 16,2.5,1,1,1,true);
 
-    wheelR(-9, 16,4,0,0,0); //back wheel
-    wheelR(-9, 16,2.5,1,1,1);
+    circle(-9, 16,4,0,0,0,false); //back wheel
+    circle(-9, 16,2.5,1,1,1,true);
 
     glPopMatrix();
     glutSwapBuffers();
@@ -188,12 +217,111 @@ void road() // id: road01
     glutSwapBuffers();
 }
 
+void greenGrass()
+{
+    glBegin(GL_POLYGON);
+    glColor3ub(134, 218, 64);
+
+	glVertex2f(-90, 35);
+	glVertex2f(90, 35);
+	glVertex2f(90, 30);
+	glVertex2f(-90, 30);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(134, 218, 64);
+
+	glVertex2f(-90, 38);
+	glVertex2f(90, 38);
+	glVertex2f(90, 60);
+	glVertex2f(-90, 60);
+
+    glEnd();
+}
+
+void railTrack()
+{
+    glBegin(GL_POLYGON); //background color
+    glColor3ub(180, 180, 180);
+
+	glVertex2f(-90, 33);
+	glVertex2f(90, 33);
+	glVertex2f(90, 38);
+	glVertex2f(-90, 38);
+
+    glEnd();
+
+    glLineWidth(3);
+    glBegin(GL_LINES);
+    glColor3ub(0,0,00);
+
+	glVertex2f(-90, 33);
+	glVertex2f(90, 33);
+
+	glVertex2f(-90, 38);
+	glVertex2f(90, 38);
+
+	for(int i = -90; i<90; i+=8)
+    {
+        glVertex2f(i, 33);
+        glVertex2f(i+3, 38);
+    }
+
+    glEnd();
+}
+
+void train()
+{
+    railTrack();
+    circle(25,35,1.5,0,0,0,false);
+    circle(45,35,1.5,0,0,0,false);
+
+    glBegin(GL_POLYGON);
+    glColor3ub(43, 50, 54);
+
+	glVertex2f(20,35);
+	glVertex2f(20, 46);
+	glVertex2f(24, 50);
+	glVertex2f(50, 50);
+	glVertex2f(50, 35);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(65, 90, 173);
+
+	glVertex2f(24, 48);
+	glVertex2f(24, 49);
+	glVertex2f(49, 49);
+	glVertex2f(49, 48);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(0,0,0);
+
+	glVertex2f(21, 46);
+	glVertex2f(23, 46);
+	glVertex2f(23, 38);
+	glVertex2f(21, 38);
+
+    glEnd();
+
+
+}
+
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
     road();
     truck();
     car();
+    sun();
+    cloud();
+    greenGrass();
+    train();
+
 
 	glFlush();  // Render now
 }
