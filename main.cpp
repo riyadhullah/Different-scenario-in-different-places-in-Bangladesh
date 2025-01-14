@@ -1,11 +1,19 @@
 #include <windows.h>  // for MS Windows
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include<math.h>
-# define PI           3.14159265358979323846
+#define PI           3.14159265358979323846
 
-void change()
-{
+float _move = 70.0f;
+void trainUpdate(int value) {
+    _move -= 1.0f;
 
+    if(_move < -300.0f)
+    {
+        _move = 70.0f;
+    }
+
+    glutPostRedisplay();
+    glutTimerFunc(20, trainUpdate, 0);
 }
 
 void initGL() {
@@ -169,7 +177,7 @@ void truck() // id: truck01
     circle(-9, 16,2.5,1,1,1,true);
 
     glPopMatrix();
-    glutSwapBuffers();
+    //glutSwapBuffers();
 }
 
 void road() // id: road01
@@ -219,7 +227,7 @@ void road() // id: road01
     glEnd();
 
     glPopMatrix();
-    glutSwapBuffers();
+    //glutSwapBuffers();
 }
 
 void greenGrass()
@@ -283,6 +291,9 @@ void railTrack()
 void train()
 {
     railTrack();
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(_move, 0.0f,0.0f);
 
     //front bogie ______________________________________________________
     circle(25,35,1.5,0,0,0,false);
@@ -436,9 +447,10 @@ void train()
     }
 
     glPopMatrix();
-    glutSwapBuffers();
+    //glutSwapBuffers();
     //back bogie ends ______________________________________________________
 
+    glPopMatrix();
 }
 
 void display() {
@@ -452,18 +464,19 @@ void display() {
     greenGrass();
     train();
 
-
+    glutSwapBuffers();  // Swap buffers for smooth animation
 	glFlush();  // Render now
 }
 
 
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);          // Initialize GLUT
-	glutCreateWindow("Vertex, Primitive & Color");  // Create window with the given title
+	glutCreateWindow("Different scenario in different places in Bangladesh");  // Create window with the given title
 	glutInitWindowSize(500, 1000);   // Set the window's initial width & height
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
 	initGL();
 	gluOrtho2D(-90,90,-30,150);                      // Our own OpenGL initialization
+	glutTimerFunc(20, trainUpdate, 0);
 	glutMainLoop();                 // Enter the event-processing loop
 	return 0;
 }
