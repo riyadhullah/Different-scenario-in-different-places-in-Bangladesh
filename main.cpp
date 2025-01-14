@@ -3,17 +3,43 @@
 #include<math.h>
 #define PI           3.14159265358979323846
 
-float _move = 70.0f;
-void trainUpdate(int value) {
-    _move -= 1.0f;
+float _trainMove = 70.0f;
+float _carMove = 0.0f;
+float _truckMove = -120.0f;
+float _wheelAngle=0.0f;
 
-    if(_move < -300.0f)
+
+void update(int value) {
+    _trainMove -= 1.0f;
+
+    if(_trainMove < -300.0f)
     {
-        _move = 70.0f;
+        _trainMove = 70.0f;
+    }
+
+    _carMove += 1.0f;
+
+    if(_carMove > 200.0f)
+    {
+        _carMove = -60;
+    }
+
+    _truckMove += 0.4f;
+
+    if(_truckMove > 150.0f)
+    {
+        _truckMove = -100;
+    }
+
+
+    _wheelAngle -=8.0f;
+    if(_wheelAngle < 360.0)
+    {
+        _wheelAngle+=360;
     }
 
     glutPostRedisplay();
-    glutTimerFunc(20, trainUpdate, 0);
+    glutTimerFunc(20,update , 0);
 }
 
 void initGL() {
@@ -81,6 +107,10 @@ void cloud()
 
 void car()
 {
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(_carMove, 0.0f,0.0f);
+
     glBegin(GL_POLYGON); //square body
     glColor3ub(58, 58, 77);
 
@@ -127,15 +157,45 @@ void car()
 
 	glEnd();
 
+	// Front wheel
+    glPushMatrix();
+    glTranslatef(-71.0629082901365, -22.7733750896956, 0.0f); // Translate to wheel position
+    glRotatef(_wheelAngle, 0.0f, 0.0f, 1.0f); // Apply rotation
+    circle(0,0,4,0,0,0,false);
+    circle(0,0,2.5,1,1,1,true); // Draw wheel
+    glPopMatrix();
+
+
+    // Back wheel
+    glPushMatrix();
+    glTranslatef(-48.55464227402, -22.6552816248906, 0.0f); // Translate to wheel position
+    glRotatef(_wheelAngle, 0.0f, 0.0f, 1.0f); // Apply rotation
+    circle(0,0,4,0,0,0,false);
+    circle(0,0,2.5,1,1,1,true); // Draw wheel
+    glPopMatrix();
+
+{
+    /*glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(-71.0629082901365, -22.7733750896956, 0.0f);
+    glRotatef(_angle1, 0.0f, 0.0f,1.0f);
+
 	circle(-71.0629082901365, -22.7733750896956,4,0,0,0,false); //front wheel
     circle(-71.0629082901365, -22.7733750896956,2.5,1,1,1,true);
 
     circle(-48.55464227402, -22.6552816248906,4,0,0,0,false); //back wheel
-    circle(-48.55464227402, -22.6552816248906,2.5,1,1,1,true);
+    circle(-48.55464227402, -22.6552816248906,2.5,1,1,1,true);*/
+}
+
+    glPopMatrix();
 }
 
 void truck() // id: truck01
 {
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(_truckMove, 0.0f,0.0f);
+
     glPushMatrix();
     glTranslatef(0.0f, -10.0f,0.0f);
     glBegin(GL_POLYGON); //square body
@@ -170,11 +230,33 @@ void truck() // id: truck01
 
     glEnd();
 
-    circle(10, 16,4,0,0,0,false); //front wheel
-    circle(10, 16,2.5,1,1,1,true);
+    // front wheel
+    glPushMatrix();
+    glTranslatef(10, 16, 0.0f); // Translate to wheel position
+    glRotatef(_wheelAngle, 0.0f, 0.0f, 1.0f); // Apply rotation
+    circle(0,0,4,0,0,0,false);
+    circle(0,0,2.5,1,1,1,true); // Draw wheel
+    glPopMatrix();
 
-    circle(-9, 16,4,0,0,0,false); //back wheel
-    circle(-9, 16,2.5,1,1,1,true);
+    // Back wheel
+    glPushMatrix();
+    glTranslatef(-9, 16, 0.0f); // Translate to wheel position
+    glRotatef(_wheelAngle, 0.0f, 0.0f, 1.0f); // Apply rotation
+    circle(0,0,4,0,0,0,false);
+    circle(0,0,2.5,1,1,1,true); // Draw wheel
+    glPopMatrix();
+
+    {
+        /*
+        circle(10, 16,4,0,0,0,false); //front wheel
+        circle(10, 16,2.5,1,1,1,true);
+
+        circle(-9, 16,4,0,0,0,false); //back wheel
+        circle(-9, 16,2.5,1,1,1,true);
+        */
+    }
+
+    glPopMatrix();
 
     glPopMatrix();
     //glutSwapBuffers();
@@ -293,7 +375,7 @@ void train()
     railTrack();
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glTranslatef(_move, 0.0f,0.0f);
+    glTranslatef(_trainMove, 0.0f,0.0f);
 
     //front bogie ______________________________________________________
     circle(25,35,1.5,0,0,0,false);
@@ -453,8 +535,226 @@ void train()
     glPopMatrix();
 }
 
-void display() {
+
+void building()
+{
+    glBegin(GL_POLYGON);    //left
+    glColor3ub(0, 196, 241);
+
+	glVertex2f(51.4, 46);
+	glVertex2f(51.4, 66.2);
+	glVertex2f(60.7, 66.2);
+	glVertex2f(60.7, 46);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //right
+    glColor3ub(0, 196, 241);
+
+	glVertex2f(82.7, 63.5);
+    glVertex2f(82.7, 46);
+    glVertex2f(88, 46);
+    glVertex2f(88, 63.5);
+
+    glEnd();
+
+
+
+    glBegin(GL_POLYGON);    //right top
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(82.7, 64.5);
+    glVertex2f(82.7, 63.5);
+    glVertex2f(88.6, 63.5);
+    glVertex2f(88.6, 64.5);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //mid-right top
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(83.2, 69);
+    glVertex2f(83.2, 67.7);
+    glVertex2f(76, 67.7);
+    glVertex2f(76, 69);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //mid-right
+    glColor3ub(0, 196, 241);
+
+	glVertex2f(76, 67.7);
+    glVertex2f(76, 46);
+    glVertex2f(82.7, 46);
+    glVertex2f(82.7, 67.7);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //mid
+    glColor3ub(199, 199, 199);
+
+	glVertex2f(60.7, 46);
+    glVertex2f(76, 46);
+    glVertex2f(76, 71);
+    glVertex2f(60.7, 71);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //mid top
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(59.8, 74.5);
+    glVertex2f(59.8, 71);
+    glVertex2f(76.9, 71);
+    glVertex2f(76.9, 74.5);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //left top
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(50.6, 68);
+    glVertex2f(50.6, 66.2);
+    glVertex2f(60.7, 66.2);
+    glVertex2f(60.7, 68);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //bottom
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(50.6, 45.3);
+	glVertex2f(50.6, 46);
+    glVertex2f(88.8, 46);
+    glVertex2f(88.8, 45.3);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //door
+    glColor3ub(142, 206, 255);
+
+	glVertex2f(64.5, 57.3);
+	glVertex2f(64.5, 46);
+    glVertex2f(72.6, 46);
+    glVertex2f(72.6, 57.3);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //window left bottom ////////here
+    glColor3ub(142, 206, 255);
+
+	glVertex2f(54, 57.2);
+	glVertex2f(54, 53.6);
+    glVertex2f(57.6, 53.6);
+    glVertex2f(57.6, 57.2);
+
+    glEnd();
+    glBegin(GL_POLYGON);    //window left bottom
+    glColor3ub(142, 206, 255);
+
+	glVertex2f(54, 57.2);
+	glVertex2f(54, 53.6);
+    glVertex2f(57.6, 53.6);
+    glVertex2f(57.6, 57.2);
+
+    glEnd();
+
+    //lines------------------
+    glLineWidth(2);
+    glBegin(GL_LINES);    //right and mid-right line
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(82.7, 67.7);
+    glVertex2f(82.7, 46);
+
+    glEnd();
+
+    glLineWidth(2);
+    glBegin(GL_LINES);    //right line
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(88, 63.5);
+    glVertex2f(88, 46);
+
+    glEnd();
+
+    glLineWidth(2);
+    glBegin(GL_LINES);    //right-mid and mid line
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(76, 71);
+    glVertex2f(76, 46);
+
+    glEnd();
+
+    glLineWidth(2);
+    glBegin(GL_LINES);    //left and mid line
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(60.7, 71);
+    glVertex2f(60.7, 46);
+
+    glEnd();
+
+    glLineWidth(2);
+    glBegin(GL_LINES);    //left and mid line
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(51.4, 66.2);
+    glVertex2f(51.4, 46);
+
+    glEnd();
+
+    //door---------------------
+    glLineWidth(2);
+    glBegin(GL_LINE_LOOP);    //left and mid line
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(64.5, 46);
+	glVertex2f(64.5, 57.3);
+
+	glVertex2f(64.5, 57.3);
+	glVertex2f(72.6, 57.3);
+
+	glVertex2f(72.6, 57.3);
+	glVertex2f(72.6, 46);
+
+    glEnd();
+
+    glLineWidth(2);
+    glBegin(GL_LINES);    //left door handle
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(67, 52.3);
+    glVertex2f(67, 50.2);
+
+    glEnd();
+
+    glLineWidth(2);
+    glBegin(GL_LINES);    //right door handle
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(70, 50.2);
+    glVertex2f(70, 52.3);
+
+    glEnd();
+
+    glLineWidth(2);
+    glBegin(GL_LINES);    //door mid line
+    glColor3ub(5, 101, 123);
+
+	glVertex2f(68.65, 57.3);
+    glVertex2f(68.65, 46);
+
+    glEnd();
+
+
+}
+
+void display()
+{
 	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
+
 
     road();
     truck();
@@ -462,11 +762,13 @@ void display() {
     sun();
     cloud();
     greenGrass();
+    building();
     train();
 
     glutSwapBuffers();  // Swap buffers for smooth animation
 	glFlush();  // Render now
 }
+
 
 
 int main(int argc, char** argv) {
@@ -476,7 +778,7 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
 	initGL();
 	gluOrtho2D(-90,90,-30,150);                      // Our own OpenGL initialization
-	glutTimerFunc(20, trainUpdate, 0);
+	glutTimerFunc(20, update, 0);
 	glutMainLoop();                 // Enter the event-processing loop
 	return 0;
 }
