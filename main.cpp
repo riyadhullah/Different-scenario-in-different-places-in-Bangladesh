@@ -644,19 +644,55 @@ void building()
     glColor3ub(142, 206, 255);
 
 	glVertex2f(54, 57.2);
-	glVertex2f(54, 53.6);
-    glVertex2f(57.6, 53.6);
+	glVertex2f(54, 53.3);
+    glVertex2f(57.6, 53.3);
     glVertex2f(57.6, 57.2);
 
     glEnd();
-    glBegin(GL_POLYGON);    //window left bottom
+    glBegin(GL_POLYGON);    //window left top
     glColor3ub(142, 206, 255);
 
-	glVertex2f(54, 57.2);
-	glVertex2f(54, 53.6);
-    glVertex2f(57.6, 53.6);
-    glVertex2f(57.6, 57.2);
+	glVertex2f(54, 60);
+	glVertex2f(57.6, 60);
+    glVertex2f(57.6, 64.3);
+    glVertex2f(54, 64.3);
 
+    glEnd();
+
+    glBegin(GL_POLYGON);    //window right bottom-left
+    glColor3ub(142, 206, 255);
+
+	glVertex2f(77.9, 53.5);
+	glVertex2f(80.8, 53.5);
+    glVertex2f(80.8, 56.8);
+    glVertex2f(77.9, 56.8);
+    glEnd();
+
+    glBegin(GL_POLYGON);    //window right top-left
+    glColor3ub(142, 206, 255);
+
+	glVertex2f(78, 64.7);
+	glVertex2f(80.9, 64.7);
+    glVertex2f(80.9, 61.4);
+    glVertex2f(77.9, 61.4);
+    glEnd();
+
+    glBegin(GL_POLYGON);    //window right top-right
+    glColor3ub(142, 206, 255);
+
+	glVertex2f(84.2, 61.6);
+	glVertex2f(86.6, 61.6);
+    glVertex2f(86.6, 59);
+    glVertex2f(84.2, 59);
+    glEnd();
+
+    glBegin(GL_POLYGON);    //window right bottom-right
+    glColor3ub(142, 206, 255);
+
+	glVertex2f(86.6, 54);
+	glVertex2f(84.25, 54);
+    glVertex2f(84.25, 56.6);
+    glVertex2f(86.6, 56.6);
     glEnd();
 
     //lines------------------
