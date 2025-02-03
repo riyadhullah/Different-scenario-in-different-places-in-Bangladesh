@@ -4,40 +4,69 @@
 #define PI           3.14159265358979323846
 #include <cstdlib> // For rand()
 #include <ctime>   // For seeding rand()
-using namespace std;
+
 float _trainMove = 0.0f;
 float _carMove = -90.0f;
-float _truckMove = -120.0f;
+float _newTruckMove = -109.0f;
+float _oldTruckMove = -109.0f;
+float _newCarMove = -54.0f;
+float _oldCarMove = -54.0f;
 float _wheelAngle = 0.0f;
+float _sun = 0.0f;
 float _cloud = 0.0f;
 float _allObj = 0.0f;
 bool isRaining = false;
 bool isNight = false;
+bool starCheck = false;
 float rr = 0.4f, gg = 0.698f ,bb = 0.996f;
 //float r = 0.529f, g = 0.627f ,b = 0.745f; //when rain
 
 
 void update(int value) {
-    _trainMove -= 0.7f;
+    _trainMove -= 0.6f;
 
     if(_trainMove < -180.0f)
     {
         _trainMove = 0.0f;
     }
 
+    _sun -= 0.01f;
 
-    _carMove += 1.0f;
-
-    if(_carMove > 180.0f)
+    if(_sun < -180.0f)
     {
-        _carMove = 0;
+        _sun = 0.0f;
     }
 
-    _truckMove += 0.4f;
 
-    if(_truckMove > 180.0f)
+    if(_oldCarMove<=127)
     {
-        _truckMove = 0;
+        _oldCarMove += 1.0f;
+    }
+    if(_oldCarMove>=127 && _oldCarMove <= 168)
+    {
+        _oldCarMove += 1.0f;
+        _newCarMove += 1.0f;
+    }
+    if(_oldCarMove>=168)
+    {
+        _oldCarMove = _newCarMove;
+        _newCarMove = -54;
+    }
+
+
+    if(_oldTruckMove<=71)
+    {
+        _oldTruckMove += 0.5f;
+    }
+    if(_oldTruckMove>=71 && _oldTruckMove <= 75.5)
+    {
+        _oldTruckMove += 0.5f;
+        _newTruckMove += 0.5f;
+    }
+    if(_oldTruckMove>=75.5)
+    {
+        _oldTruckMove = _newTruckMove;
+        _newTruckMove = -109;
     }
 
 
@@ -142,13 +171,59 @@ void sun(float r,float g,float b) //id: sun01
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
+    glTranslatef(_sun, 0.0f,0.0f);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
     glTranslatef(50.0f, 0.0f,0.0f);
 
 	circle2(0, 120,8,r, g, b);
 
     glPopMatrix();
-
+    glPopMatrix();
 }
+
+void moon(float x, float y, float radius) {
+    circle2(x, y, radius, 200, 200, 200);
+    circle2(x+5, y+1, radius, 64, 64, 89);
+}
+
+void star() {
+    circle2(-80, 120, 0.5, 255, 255, 0);
+    circle2(-75, 110, 0.5, 255, 255, 0);
+    circle2(-68, 125, 0.5, 255, 255, 0);
+    circle2(-65, 120, 0.5, 255, 255, 0);
+    circle2(-55, 125, 0.5, 255, 255, 0);
+    circle2(-50, 105, 0.5, 255, 255, 0);
+    circle2(-43, 135, 0.5, 255, 255, 0);
+    circle2(-37, 120, 0.5, 255, 255, 0);
+    circle2(-35, 140, 0.5, 255, 255, 0);
+    circle2(-28, 130, 0.5, 255, 255, 0);
+    circle2(-20, 134, 0.5, 255, 255, 0);
+    circle2(-11, 144, 0.5, 255, 255, 0);
+    circle2(-5, 110, 0.5, 255, 255, 0);
+    circle2(1, 137, 0.5, 255, 255, 0);
+    circle2(9, 117, 0.5, 255, 255, 0);
+    circle2(15, 145, 0.5, 255, 255, 0);
+
+    circle2(20, 120, 0.5, 255, 255, 0);
+    circle2(22, 110, 0.5, 255, 255, 0);
+    circle2(25, 125, 0.5, 255, 255, 0);
+    circle2(33, 120, 0.5, 255, 255, 0);
+    circle2(40, 125, 0.5, 255, 255, 0);
+    circle2(45, 105, 0.5, 255, 255, 0);
+    circle2(43, 135, 0.5, 255, 255, 0);
+    circle2(50, 120, 0.5, 255, 255, 0);
+    circle2(55, 140, 0.5, 255, 255, 0);
+    circle2(60, 130, 0.5, 255, 255, 0);
+    circle2(68, 134, 0.5, 255, 255, 0);
+    circle2(75, 144, 0.5, 255, 255, 0);
+    circle2(80, 110, 0.5, 255, 255, 0);
+    circle2(88, 137, 0.5, 255, 255, 0);
+    circle2(83, 117, 0.5, 255, 255, 0);
+    circle2(-86, 145, 0.5, 255, 255, 0);
+}
+
 
 void sunnyCloud()
 {
@@ -274,17 +349,14 @@ void rainyCloud1()
 
 void car()
 {
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glTranslatef(_carMove, 0.0f,0.0f);
 
-    glBegin(GL_POLYGON); //square body
+    glBegin(GL_POLYGON); // body
     glColor3ub(58, 58, 77);
 
-	glVertex2f(-77.7, -7.1);
-	glVertex2f(-77.7, -22.2);
+	glVertex2f(-78, -7.1);
+	glVertex2f(-78, -22.2);
 	glVertex2f(-38.4046152581465, -22.2);
-	glVertex2f(-36.4675872016821, -18.2858234271046);
+	glVertex2f(-37, -18.2858234271046);
 	glVertex2f(-39.6055726531544, -13.3);
 	glVertex2f(-49.0582695687007, -13.3);
 	glVertex2f(-52.312476703561, -7.1);
@@ -341,32 +413,48 @@ void car()
     circle1(0,0,2.5,1,1,1,true); // Draw wheel
     glPopMatrix();
 
-{
-    /*glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glTranslatef(-71.0629082901365, -22.7733750896956, 0.0f);
-    glRotatef(_angle1, 0.0f, 0.0f,1.0f);
 
-	circle(-71.0629082901365, -22.7733750896956,4,0,0,0,false); //front wheel
-    circle(-71.0629082901365, -22.7733750896956,2.5,1,1,1,true);
-
-    circle(-48.55464227402, -22.6552816248906,4,0,0,0,false); //back wheel
-    circle(-48.55464227402, -22.6552816248906,2.5,1,1,1,true);*/
 }
 
-    glPopMatrix();
+void carMove()
+{
+    if(_oldCarMove<=127)
+    {
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(_oldCarMove, 0.0f,0.0f);
+
+        car();
+
+        glPopMatrix();
+    }
+    if(_oldCarMove>=127 && _oldCarMove <=168)
+    {
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(_oldCarMove, 0.0f,0.0f);
+
+        car();
+
+        glPopMatrix();
+
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(_newCarMove, 0.0f,0.0f);
+
+        car();
+
+        glPopMatrix();
+    }
 }
 
 void truck() // id: truck01
 {
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glTranslatef(_truckMove, 0.0f,0.0f);
 
     glPushMatrix();
     glTranslatef(0.0f, -10.0f,0.0f);
     glBegin(GL_POLYGON); //square body
-    glColor3ub(142, 39, 255);
+    glColor3ub(65, 90, 173);
 
 	glVertex2f(-14.55, 36.7333955619761);
 	glVertex2f(-14.5, 16);
@@ -413,20 +501,39 @@ void truck() // id: truck01
     circle1(0,0,2.5,1,1,1,true); // Draw wheel
     glPopMatrix();
 
+    glPopMatrix();
+}
+
+void truckMove()
+{
+    if(_oldTruckMove<71)
     {
-        /*
-        circle(10, 16,4,0,0,0,false); //front wheel
-        circle(10, 16,2.5,1,1,1,true);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(_oldTruckMove, 0.0f,0.0f);
 
-        circle(-9, 16,4,0,0,0,false); //back wheel
-        circle(-9, 16,2.5,1,1,1,true);
-        */
+        truck();
+
+        glPopMatrix();
     }
+    if(_oldTruckMove>=71 && _oldTruckMove <75.5)
+    {
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(_oldTruckMove, 0.0f,0.0f);
 
-    glPopMatrix();
+        truck();
 
-    glPopMatrix();
-    //glutSwapBuffers();
+        glPopMatrix();
+
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(_newTruckMove, 0.0f,0.0f);
+
+        truck();
+
+        glPopMatrix();
+    }
 }
 
 void road() // id: road01
@@ -1741,17 +1848,15 @@ void drawRain(int dropCount)
 void allObj()
 {
     road();
-    truck();
-    car();
+    truckMove();
+    carMove();
     if(!isRaining && !isNight)
     {
-        sun(255, 255, 0);
         sunnyCloud1();
     }
 
     if(isRaining && !isNight)
     {
-        sun(240, 230, 140);
         rainyCloud1();
     }
 
@@ -1771,6 +1876,14 @@ void allObj()
     {
         drawRain(300);
     }
+
+    glBegin(GL_POLYGON);    //body1
+        glColor3ub(254, 183, 201);
+
+        glVertex2f(150,-90);
+        glVertex2f(150, 90);
+
+    glEnd();
 }
 
 void allObj1()
@@ -1797,15 +1910,8 @@ void allObj1()
 
     glPopMatrix();
 
-    glBegin(GL_LINES); //front body
-    glColor3ub(0, 0, 0);
-
-    glVertex2f(90, -30);
-    glVertex2f(90, 150);
-
-    glEnd();
-
     glPopMatrix();
+
 
 
 }
@@ -1814,6 +1920,21 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
     glClearColor(rr,gg,bb, 1.0f);
+
+    if(!isRaining && !isNight)
+    {
+        sun(255, 255, 0);
+    }
+
+    if(isRaining && !isNight)
+    {
+        sun(240, 230, 140);
+    }
+    if(isNight)
+    {
+        moon(50,120,10);
+        star();
+    }
 
     allObj1();
 
