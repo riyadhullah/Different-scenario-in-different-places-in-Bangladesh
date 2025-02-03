@@ -5,33 +5,39 @@
 #include <cstdlib> // For rand()
 #include <ctime>   // For seeding rand()
 using namespace std;
-float _trainMove = 70.0f;
-float _carMove = 0.0f;
+float _trainMove = 0.0f;
+float _carMove = -90.0f;
 float _truckMove = -120.0f;
-float _wheelAngle=0.0f;
+float _wheelAngle = 0.0f;
 float _cloud = 0.0f;
+float _allObj = 0.0f;
+bool isRaining = false;
+bool isNight = false;
+float rr = 0.4f, gg = 0.698f ,bb = 0.996f;
+//float r = 0.529f, g = 0.627f ,b = 0.745f; //when rain
 
 
 void update(int value) {
-    _trainMove -= 1.0f;
+    _trainMove -= 0.7f;
 
-    if(_trainMove < -300.0f)
+    if(_trainMove < -180.0f)
     {
-        _trainMove = 70.0f;
+        _trainMove = 0.0f;
     }
+
 
     _carMove += 1.0f;
 
-    if(_carMove > 200.0f)
+    if(_carMove > 180.0f)
     {
-        _carMove = -60;
+        _carMove = 0;
     }
 
     _truckMove += 0.4f;
 
-    if(_truckMove > 150.0f)
+    if(_truckMove > 180.0f)
     {
-        _truckMove = -100;
+        _truckMove = 0;
     }
 
 
@@ -41,19 +47,46 @@ void update(int value) {
         _wheelAngle+=360;
     }
 
-    _cloud -=0.5f;
+    _cloud -=0.2f;
     if(_cloud < -181.0)
     {
         _cloud = 0;
+    }
+
+
+    _allObj -= 0.4f;
+
+    if(_allObj < -180.0f)
+    {
+        _allObj = 0;
     }
 
     glutPostRedisplay();
     glutTimerFunc(20,update , 0);
 }
 
-void initGL() {
-	// Set "clearing" or background color
-	glClearColor(0.4f, 0.698f, 0.996f, 1.0f);
+void sceenUpdateRain(int value)
+{
+    if(!isRaining)
+    {
+        rr = 0.529f; gg = 0.627f; bb = 0.745f;
+        isRaining = true;
+        glutPostRedisplay();
+    }
+
+    glutTimerFunc(2000,sceenUpdateRain , 0);
+}
+
+void sceenUpdateNight(int value)
+{
+    if(!isNight && isRaining)
+    {
+        rr = 0.25f; gg = 0.25f; bb = 0.35f;
+        isNight = true;
+        glutPostRedisplay();
+    }
+
+    glutTimerFunc(2000,sceenUpdateNight , 0);
 }
 
 void circle1(float x, float y, float radius,float r,float g,float b, bool wheel)
@@ -105,26 +138,86 @@ void circle2(float x, float y, float radius,float r,float g,float b)
     glEnd();
 }
 
-void sun() //id: sun01
+void sun(float r,float g,float b) //id: sun01
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(50.0f, 0.0f,0.0f);
 
-	circle2(0, 120,8,240, 230, 140);
+	circle2(0, 120,8,r, g, b);
 
     glPopMatrix();
 
 }
 
-void cloud1()
+void sunnyCloud()
 {
+    circle2(-57.3372072570531, 112.1502599137751,7,255, 255, 255);
+    circle2(-51.2773820914892, 122.0399124341394,7,255, 255, 255);
+    circle2(-46.2165875917974, 116.1712839965521,7,255, 255, 255);
+    circle2(-60, 120,8,255, 255, 255);
 
+    glPushMatrix();
+    glTranslatef(100.0f, -5.0f,0.0f);
 
+    circle2(-57.3372072570531, 112.1502599137751,6,255, 255, 255);
+    circle2(-51.2773820914892, 122.0399124341394,6,255, 255, 255);
+    circle2(-47.2165875917974, 116.1712839965521,6,255, 255, 255);
+    circle2(-60, 120,8,255, 255, 255);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(65.0f, -10.0f,0.0f);
+
+    circle2(-57.3372072570531, 112.1502599137751,6,255, 255, 255);
+    circle2(-51.2773820914892, 122.0399124341394,6,255, 255, 255);
+    circle2(-47.2165875917974, 116.1712839965521,6,255, 255, 255);
+    circle2(-60, 120,8,255, 255, 255);
+    glPopMatrix();
+}
+
+void sunnyCloud1()
+{
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(_cloud, 0.0f,0.0f);
+
+    sunnyCloud();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(181, 0.0f,0.0f);
+
+    sunnyCloud();
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(-181, 0.0f,0.0f);
+
+    sunnyCloud();
+
+    glPopMatrix();
+
+    glPopMatrix();
+}
+
+void rainyCloud()
+{
     circle2(-57.3372072570531, 112.1502599137751,7,203, 203, 203);
     circle2(-51.2773820914892, 122.0399124341394,7,203, 203, 203);
     circle2(-46.2165875917974, 116.1712839965521,7,203, 203, 203);
     circle2(-60, 120,8,203, 203, 203);
+
+    glPushMatrix();
+    glTranslatef(65.0f, -10.0f,0.0f);
+
+    circle2(-57.3372072570531, 112.1502599137751,6,203, 203, 203);
+    circle2(-51.2773820914892, 122.0399124341394,6,203, 203, 203);
+    circle2(-47.2165875917974, 116.1712839965521,6,203, 203, 203);
+    circle2(-60, 120,8,203, 203, 203);
+    glPopMatrix();
 
     glPushMatrix();
     glTranslatef(100.0f, -5.0f,0.0f);
@@ -150,23 +243,21 @@ void cloud1()
     circle2(69.0320509538031, 154.2309070906123,8,203, 203, 203);
     circle2(80.6399097209005, 147.2786837769889,8,203, 203, 203);
 
-
-
 }
 
-void cloud()
+void rainyCloud1()
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(_cloud, 0.0f,0.0f);
 
-    cloud1();
+    rainyCloud();
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(181, 0.0f,0.0f);
 
-    cloud1();
+    rainyCloud();
 
     glPopMatrix();
 
@@ -174,7 +265,7 @@ void cloud()
     glPushMatrix();
     glTranslatef(-181, 0.0f,0.0f);
 
-    cloud1();
+    rainyCloud();
 
     glPopMatrix();
 
@@ -275,7 +366,7 @@ void truck() // id: truck01
     glPushMatrix();
     glTranslatef(0.0f, -10.0f,0.0f);
     glBegin(GL_POLYGON); //square body
-    glColor3ub(142, 39, 3);
+    glColor3ub(142, 39, 255);
 
 	glVertex2f(-14.55, 36.7333955619761);
 	glVertex2f(-14.5, 16);
@@ -1450,6 +1541,7 @@ void translatedHouse()
 
     glPopMatrix();
 }
+
 void tree1()
 {
     glBegin(GL_POLYGON);    //body
@@ -1646,17 +1738,23 @@ void drawRain(int dropCount)
     glEnd();
 }
 
-
-
-void display()
+void allObj()
 {
-	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
-
     road();
     truck();
     car();
-    sun();
-    cloud();
+    if(!isRaining && !isNight)
+    {
+        sun(255, 255, 0);
+        sunnyCloud1();
+    }
+
+    if(isRaining && !isNight)
+    {
+        sun(240, 230, 140);
+        rainyCloud1();
+    }
+
     greenGrass();
     tree1();
     tree2();
@@ -1669,22 +1767,130 @@ void display()
     house();
     train();
 
-    drawRain(300);
+    if(isRaining)
+    {
+        drawRain(300);
+    }
+}
+
+void allObj1()
+{
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(_allObj, 0.0f,0.0f);
+
+    allObj();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(180, 0.0f,0.0f);
+
+    allObj();
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(-180, 0.0f,0.0f);
+
+    allObj();
+
+    glPopMatrix();
+
+    glBegin(GL_LINES); //front body
+    glColor3ub(0, 0, 0);
+
+    glVertex2f(90, -30);
+    glVertex2f(90, 150);
+
+    glEnd();
+
+    glPopMatrix();
+
+
+}
+
+void display()
+{
+	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
+    glClearColor(rr,gg,bb, 1.0f);
+
+    allObj1();
 
     glutSwapBuffers();  // Swap buffers for smooth animation
 	glFlush();  // Render now
 }
 
 
+void handleMouse(int button, int state, int x, int y) {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+	    if(!isRaining)
+        {
+            rr = 0.529f; gg = 0.627f; bb = 0.745f;
+            isRaining = true;
+            glutPostRedisplay();
+        }
+        else if(isRaining)
+        {
+            rr = 0.4f; gg = 0.698f;bb = 0.996f;
+            isRaining = false;
+            glutPostRedisplay();
+        }
+    }
+    if (button == GLUT_RIGHT_BUTTON)
+        {
+            //speed -= 0.1f;
+        }
+    glutPostRedisplay();
+
+}
+
+
+void handleKeypress(unsigned char key, int x, int y) {
+	switch (key) {
+	    case 'd':
+	        rr = 0.4f; gg = 0.698f;bb = 0.996f;
+            isRaining = false;
+            isNight = false;
+            glutPostRedisplay();
+            break;
+
+        case 'r':
+            rr = 0.529f; gg = 0.627f ;bb = 0.745f;
+            isRaining = true;
+            isNight = false;
+            glutPostRedisplay();
+            break;
+
+        case 'n':
+            rr = 0.25f; gg = 0.25f; bb = 0.35f;
+            isNight = true;
+            isRaining = false;
+            glutPostRedisplay();
+            break;
+        case 'b':
+            rr = 0.25f; gg = 0.25f; bb = 0.35f;
+            isNight = true;
+            isRaining = true;
+            glutPostRedisplay();
+            break;
+
+        glutPostRedisplay();
+	}
+}
 
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);          // Initialize GLUT
 	glutCreateWindow("Different scenario in different places in Bangladesh");  // Create window with the given title
 	glutInitWindowSize(500, 1000);   // Set the window's initial width & height
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
-	initGL();
 	gluOrtho2D(-90,90,-30,150);                      // Our own OpenGL initialization
 	glutTimerFunc(20, update, 0);
+	//glutTimerFunc(2000, sceenUpdateRain, 0);
+	//glutTimerFunc(4000, sceenUpdateNight, 0);
+	glutKeyboardFunc(handleKeypress);
+    glutMouseFunc(handleMouse);
 	glutMainLoop();                 // Enter the event-processing loop
 	return 0;
 }
