@@ -2,11 +2,14 @@
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include<math.h>
 #define PI           3.14159265358979323846
-
+#include <cstdlib> // For rand()
+#include <ctime>   // For seeding rand()
+using namespace std;
 float _trainMove = 70.0f;
 float _carMove = 0.0f;
 float _truckMove = -120.0f;
 float _wheelAngle=0.0f;
+float _cloud = 0.0f;
 
 
 void update(int value) {
@@ -38,6 +41,12 @@ void update(int value) {
         _wheelAngle+=360;
     }
 
+    _cloud -=0.5f;
+    if(_cloud < -181.0)
+    {
+        _cloud = 0;
+    }
+
     glutPostRedisplay();
     glutTimerFunc(20,update , 0);
 }
@@ -47,7 +56,7 @@ void initGL() {
 	glClearColor(0.4f, 0.698f, 0.996f, 1.0f);
 }
 
-void circle(float x, float y, float radius,float r,float g,float b, bool wheel)
+void circle1(float x, float y, float radius,float r,float g,float b, bool wheel)
 {
     int triangleAmount = 100; //# of triangles used to draw circle
 
@@ -81,28 +90,95 @@ void circle(float x, float y, float radius,float r,float g,float b, bool wheel)
     }
 }
 
-void sun() //id: sun01
+void circle2(float x, float y, float radius,float r,float g,float b)
 {
-	circle(0, 120,8,255,255,0,false);
+    int triangleAmount = 100; //# of triangles used to draw circle
+
+    GLfloat twicePi = 2.0f * PI;
+    glColor3ub(r, g, b); // Set color
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(x, y); // center of circle
+    for(int i = 0; i <= triangleAmount; i++)
+    {
+        glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)), y + (radius * sin(i * twicePi / triangleAmount)));
+    }
+    glEnd();
 }
 
-void cloud()
+void sun() //id: sun01
 {
-    circle(-57.3372072570531, 112.1502599137751,8,203, 203, 203,false);
-    circle(-51.2773820914892, 122.0399124341394,8,203, 203, 203,false);
-    circle(-46.2165875917974, 116.1712839965521,8,203, 203, 203,false);
-    circle(-60, 120,8,203, 203, 203,false);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(50.0f, 0.0f,0.0f);
+
+	circle2(0, 120,8,240, 230, 140);
+
+    glPopMatrix();
+
+}
+
+void cloud1()
+{
+
+
+    circle2(-57.3372072570531, 112.1502599137751,7,203, 203, 203);
+    circle2(-51.2773820914892, 122.0399124341394,7,203, 203, 203);
+    circle2(-46.2165875917974, 116.1712839965521,7,203, 203, 203);
+    circle2(-60, 120,8,203, 203, 203);
 
     glPushMatrix();
     glTranslatef(100.0f, -5.0f,0.0f);
 
-    circle(-57.3372072570531, 112.1502599137751,8,203, 203, 203,false);
-    circle(-51.2773820914892, 122.0399124341394,8,203, 203, 203,false);
-    circle(-46.2165875917974, 116.1712839965521,8,203, 203, 203,false);
-    circle(-60, 120,8,203, 203, 203,false);
+    circle2(-57.3372072570531, 112.1502599137751,6,203, 203, 203);
+    circle2(-51.2773820914892, 122.0399124341394,6,203, 203, 203);
+    circle2(-47.2165875917974, 116.1712839965521,6,203, 203, 203);
+    circle2(-60, 120,8,203, 203, 203);
     glPopMatrix();
 
+    circle2(-87.9571609085263, 142.0867286249647,8,203, 203, 203);
+    circle2(-80, 143,8,203, 203, 203);
+    circle2(-71.1116097709093, 144.64163355458 ,8,203, 203, 203);
+    circle2(-60, 140,8,203, 203, 203);
+    circle2(-38.1283037619618, 144.8813653929808 ,8,203, 203, 203);
+    circle2(-30.6256633393257, 143.9224380393776,8,203, 203, 203);
+    circle2(-10.3826901235339, 147.5184156153897,8,203, 203, 203);
+    circle2(-1.6060164215822, 144.8813653929808,8,203, 203, 203);
+    circle2(12.8330274106609, 144.64163355458,8,203, 203, 203);
+    circle2(15.5370192950205, 144.64163355458,8,203, 203, 203);
+    circle2(46.0994519261229, 145.1210972313816,8,203, 203, 203);
+    circle2(58.1319884529922, 153.271979737009,8,203, 203, 203);
+    circle2(69.0320509538031, 154.2309070906123,8,203, 203, 203);
+    circle2(80.6399097209005, 147.2786837769889,8,203, 203, 203);
 
+
+
+}
+
+void cloud()
+{
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(_cloud, 0.0f,0.0f);
+
+    cloud1();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(181, 0.0f,0.0f);
+
+    cloud1();
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(-181, 0.0f,0.0f);
+
+    cloud1();
+
+    glPopMatrix();
+
+    glPopMatrix();
 }
 
 void car()
@@ -161,8 +237,8 @@ void car()
     glPushMatrix();
     glTranslatef(-71.0629082901365, -22.7733750896956, 0.0f); // Translate to wheel position
     glRotatef(_wheelAngle, 0.0f, 0.0f, 1.0f); // Apply rotation
-    circle(0,0,4,0,0,0,false);
-    circle(0,0,2.5,1,1,1,true); // Draw wheel
+    circle1(0,0,4,0,0,0,false);
+    circle1(0,0,2.5,1,1,1,true); // Draw wheel
     glPopMatrix();
 
 
@@ -170,8 +246,8 @@ void car()
     glPushMatrix();
     glTranslatef(-48.55464227402, -22.6552816248906, 0.0f); // Translate to wheel position
     glRotatef(_wheelAngle, 0.0f, 0.0f, 1.0f); // Apply rotation
-    circle(0,0,4,0,0,0,false);
-    circle(0,0,2.5,1,1,1,true); // Draw wheel
+    circle1(0,0,4,0,0,0,false);
+    circle1(0,0,2.5,1,1,1,true); // Draw wheel
     glPopMatrix();
 
 {
@@ -234,16 +310,16 @@ void truck() // id: truck01
     glPushMatrix();
     glTranslatef(10, 16, 0.0f); // Translate to wheel position
     glRotatef(_wheelAngle, 0.0f, 0.0f, 1.0f); // Apply rotation
-    circle(0,0,4,0,0,0,false);
-    circle(0,0,2.5,1,1,1,true); // Draw wheel
+    circle1(0,0,4,0,0,0,false);
+    circle1(0,0,2.5,1,1,1,true); // Draw wheel
     glPopMatrix();
 
     // Back wheel
     glPushMatrix();
     glTranslatef(-9, 16, 0.0f); // Translate to wheel position
     glRotatef(_wheelAngle, 0.0f, 0.0f, 1.0f); // Apply rotation
-    circle(0,0,4,0,0,0,false);
-    circle(0,0,2.5,1,1,1,true); // Draw wheel
+    circle1(0,0,4,0,0,0,false);
+    circle1(0,0,2.5,1,1,1,true); // Draw wheel
     glPopMatrix();
 
     {
@@ -378,8 +454,8 @@ void train()
     glTranslatef(_trainMove, 0.0f,0.0f);
 
     //front bogie ______________________________________________________
-    circle(25,35,1.5,0,0,0,false);
-    circle(45,35,1.5,0,0,0,false);
+    circle1(25,35,1.5,0,0,0,false);
+    circle1(45,35,1.5,0,0,0,false);
 
     glBegin(GL_POLYGON);    //body
     glColor3ub(43, 50, 54);
@@ -462,8 +538,8 @@ void train()
     glPushMatrix();
     glTranslatef(33.0f, 0.0f,0.0f);
 
-    circle(25,35,1.5,0,0,0,false);
-    circle(45,35,1.5,0,0,0,false);
+    circle1(25,35,1.5,0,0,0,false);
+    circle1(45,35,1.5,0,0,0,false);
 
     glBegin(GL_POLYGON);    //body
     glColor3ub(43, 50, 54);
@@ -534,7 +610,6 @@ void train()
 
     glPopMatrix();
 }
-
 
 void building1()
 {
@@ -1093,6 +1168,17 @@ void building2()
     }
 }
 
+void translatedBuilding2()
+{
+    glMatrixMode(GL_MODELVIEW);     //translated tree2
+    glPushMatrix();
+    glTranslatef(65.0f, 5.0f,0.0f);
+
+    building2();
+
+    glPopMatrix();
+}
+
 void house()
 {
     glBegin(GL_POLYGON);    //body1
@@ -1354,10 +1440,217 @@ void house()
 
 }
 
+void translatedHouse()
+{
+    glMatrixMode(GL_MODELVIEW);     //translated tree2
+    glPushMatrix();
+    glTranslatef(50.0f, 5.0f,0.0f);
+
+    house();
+
+    glPopMatrix();
+}
+void tree1()
+{
+    glBegin(GL_POLYGON);    //body
+        glColor3ub(165, 114, 8);
+
+        glVertex2f(-50, 48);
+        glVertex2f(-48, 48);
+        glVertex2f(-49, 80);
+
+    glEnd();
+
+    glBegin(GL_POLYGON);    //body
+        glColor3ub(165, 114, 8);
+
+        glVertex2f(-48.706698403882, 61.6964027899669);
+        glVertex2f(-48.5222185204125, 58.6266315356091);
+        glVertex2f(-45.8653714229234, 78.1600430405144);
+
+    glEnd();
+
+    circle2(-51.6941634386321, 77,6,84, 115, 26);
+    circle2(-49, 80,6,86, 139, 23);
+    circle2(-45, 77.1600430405144,6,109, 181, 45);
+
+
+
+
+}
+
+void translatedTree1()
+{
+    glMatrixMode(GL_MODELVIEW);     //translated tree1
+    glPushMatrix();
+    glTranslatef(135.0f, 5.0f,0.0f);
+
+    tree1();
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);     //translated tree1
+    glPushMatrix();
+    glTranslatef(115.0f, 5.0f,0.0f);
+
+    tree1();
+
+    glPopMatrix();
+}
+
+void tree2Leaf(int x, int y, float leafRadius, int leafCount, float radius, float r,float g,float b)
+{
+    //int x = 32, y =80;
+    // Draw Leaves in a Circular Shape - Smaller
+    //float leafRadius = 4; // Smaller cluster radius
+    //int leafCount = 10;    // Fewer leaves
+
+    for (int i = 0; i < leafCount; i++)
+    {
+        float angle = i * (2 * PI / leafCount); // Spread evenly
+        float leafX = x + leafRadius * cos(angle);
+        float leafY = y + leafRadius * sin(angle);
+        circle2(leafX, leafY, radius,r ,g ,b); // Smaller leaves
+    }
+
+}
+
+void tree2()
+{
+    {/*glBegin(GL_POLYGON);    //body
+        glColor3ub(165, 114, 8);
+
+        glVertex2f(30, 55);
+        glVertex2f(34, 55);
+        glVertex2f(32, 80);
+
+    glEnd();
+
+    float x = 26, y = 75;
+    bool check = true;
+    for(y ; y<96; y+=2.5)
+    {
+        x+=0.7;
+        if(check)
+        {
+            check = false;
+            x+=0.2;
+            y-=0.5;
+        }
+        else
+        {
+            check = true;
+        }
+
+        circle2(x, y, 2, 84, 115, 26);
+    }
+
+    for(y ; y>74; y-=2.5)
+    {
+        x+=0.7;
+
+        circle2(x, y, 2, 84, 115, 26);
+    }*/
+
+    // Draw Trunk (Brown)
+    }
+
+    glBegin(GL_POLYGON);    //body
+        glColor3ub(165, 114, 8);
+
+        glVertex2f(31, 52);
+        glVertex2f(33, 52);
+        glVertex2f(32, 80);
+
+    glEnd();
+
+    tree2Leaf(32, 80, 7,8, 5, 70, 115, 26);
+    tree2Leaf(32, 80, 5,6, 5, 86, 139, 23);
+
+    glBegin(GL_POLYGON);    //body right
+        glColor3ub(165, 114, 8);
+
+        glVertex2f(37.7960578152048, 83.1262131855341);
+        glVertex2f(32.0209133487875, 57.4458869798775);
+        glVertex2f(32.6963688419357, 55.3296908337544);
+
+    glEnd();
+
+    tree2Leaf(37.7960578152048, 83.1262131855341, 4,8, 4, 97, 160, 45);
+
+    glBegin(GL_POLYGON);    //body left
+        glColor3ub(165, 114, 8);
+
+        glVertex2f(31.6216215837314, 61.3623430535477);
+        glVertex2f(31.723012903515, 63.9951851056522);
+        glVertex2f(25, 75.8429743401225);
+
+    glEnd();
+
+    tree2Leaf(25, 75.8429743401225, 3, 6, 4, 109, 181, 45);
+
+
+
+
+}
+
+void translatedTree2()
+{
+    glMatrixMode(GL_MODELVIEW);     //translated tree2
+    glPushMatrix();
+    glTranslatef(-20.0f, -10.0f,0.0f);
+
+    tree2();
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);     //translated tree2
+    glPushMatrix();
+    glTranslatef(18.0f, -5.0f,0.0f);
+
+    tree2();
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);     //translated tree2
+    glPushMatrix();
+    glTranslatef(-120.0f, -5.0f,0.0f);
+
+    tree2();
+
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);     //translated tree2
+    glPushMatrix();
+    glTranslatef(-60.0f, -5.0f,0.0f);
+
+    tree2();
+
+    glPopMatrix();
+}
+
+
+void drawRain(int dropCount)
+{
+    glColor3ub(173, 216, 230); // Light blue color for rain
+
+    glBegin(GL_LINES);
+    for (int i = 0; i < dropCount; i++)
+    {
+        float x = (rand() % 181) - 90; // Random x in range (-90 to 90)
+        float y = (rand() % 181) - 30; // Random y in range (-30 to 150)
+
+        glVertex2f(x, y);
+        glVertex2f(x, y - 5); // Slightly downward line for rain effect
+    }
+    glEnd();
+}
+
+
+
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
-
 
     road();
     truck();
@@ -1365,10 +1658,18 @@ void display()
     sun();
     cloud();
     greenGrass();
+    tree1();
+    tree2();
+    translatedHouse();
+    translatedBuilding2();
+    translatedTree1();
+    translatedTree2();
     building1();
     building2();
     house();
     train();
+
+    drawRain(300);
 
     glutSwapBuffers();  // Swap buffers for smooth animation
 	glFlush();  // Render now

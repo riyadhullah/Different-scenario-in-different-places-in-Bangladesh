@@ -1,8 +1,10 @@
 # depslib dependency file v1.0
-1738527605 source:e:\class\8th semester\graphics\project\different-scenario-in-different-places-in-bangladesh\main.cpp
+1738586936 source:e:\class\8th semester\graphics\project\different-scenario-in-different-places-in-bangladesh\main.cpp
 	<windows.h>
 	<GL/glut.h>
 	<math.h>
+	<cstdlib>
+	<ctime>
 
 1526093414 c:\program files\codeblocks\mingw\x86_64-w64-mingw32\include\windows.h
 	<_mingw.h>
