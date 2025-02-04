@@ -4,7 +4,1825 @@
 #define PI           3.14159265358979323846
 #include <cstdlib> // For rand()
 #include <ctime>   // For seeding rand()
+#include <mmsystem.h>
+#include <stdio.h>
 
+bool riyadh = false, rakib = false, siam= false, fahad = false;
+
+float _move1 = 0.0f;
+float _move2 = 0.0f;
+float _move3 = 0.0f;
+
+float _angle1 = 0.0f;
+float _angle2 = 0.0f;
+
+bool rainday = false;
+float rain = 0.0;
+float waterLevel = 0.0;
+
+void circleSolid(float x, float y, float radius,float r,float g,float b)
+{
+    int triangleAmount = 100; //# of triangles used to draw circle
+
+    GLfloat twicePi = 2.0f * PI;
+
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3ub(r,g,b);
+    glVertex2f(x, y); // center of circle
+    for(int i = 0; i <= triangleAmount; i++)
+    {
+        glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)), y + (radius * sin(i * twicePi / triangleAmount)));
+    }
+    glEnd();
+}
+//01
+void sky()
+{
+    glBegin(GL_QUADS);
+    glColor3ub(130, 202, 255);
+    glVertex2f(-90.64f,85.64f);
+    glVertex2f(90.64f,85.64f);
+    glVertex2f(90.64f,150.64f);
+    glVertex2f(-90.64f,150.64f);
+    glEnd();
+}
+//02
+void skyR()
+{
+    glBegin(GL_QUADS);
+    glColor3ub(99, 101, 105);
+    glVertex2f(-90.64f,85.64f);
+    glVertex2f(90.64f,85.64f);
+    glVertex2f(90.64f,150.64f);
+    glVertex2f(-90.64f,150.64f);
+    glEnd();
+}
+//03
+void ground()
+{
+    glBegin(GL_QUADS);
+    glColor3ub(161, 161, 161);
+    glVertex2f(-90.64f,60.00f);
+    glVertex2f(90.64f,60.00f);
+    glVertex2f(90.64f,85.64f);
+    glVertex2f(-90.64f,85.64f);
+    glEnd();
+}
+//04
+void roadRakib()
+{
+    //Whole Road
+	glBegin(GL_POLYGON);
+	glColor3ub(64.0f, 64.0f, 65.0f);
+	glVertex2f(-90.0f, 20.2f);
+	glVertex2f(90.0f, 20.2f);
+	glVertex2f(90.0f, 60.9f);
+	glVertex2f(-90.0f, 60.9f);
+	glEnd();
+
+	//Border around the roadRakib
+	glLineWidth(5.5);
+	glBegin(GL_LINES);
+	glColor3ub(255.0f, 255.0f, 255.0f);
+	glVertex2f(-90.0f, 60.3f);
+	glVertex2f(90.0f, 60.3f);
+    glVertex2f(-90.0f, 21.1f);
+	glVertex2f(90.0f, 21.1f);
+    glEnd();
+
+    //Zebra Crossing
+    glLineWidth(3.5);
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 23.5f);
+	glVertex2f(8.0f, 23.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 26.5f);
+	glVertex2f(8.0f, 26.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 29.5f);
+	glVertex2f(8.0f, 29.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 32.5f);
+	glVertex2f(8.0f, 32.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 35.5f);
+	glVertex2f(8.0f, 35.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 38.5f);
+	glVertex2f(8.0f, 38.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 41.5f);
+	glVertex2f(8.0f, 41.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 44.5f);
+	glVertex2f(8.0f, 44.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 47.5f);
+	glVertex2f(8.0f, 47.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 50.5f);
+	glVertex2f(8.0f, 50.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 53.5f);
+	glVertex2f(8.0f, 53.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 56.5f);
+	glVertex2f(8.0f, 56.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(0.0f, 58.5f);
+	glVertex2f(8.0f, 58.5f);
+	glEnd();
+
+	//Middle Line of Road
+    glLineWidth(3.5);
+    glColor3ub(255.0f, 255.0f, 255.0f);
+	glBegin(GL_LINES);
+    glVertex2f(-90.0f, 40.5f);
+	glVertex2f(-80.0f, 40.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(-70.0f, 40.5f);
+	glVertex2f(-60.0f, 40.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(-50.0f, 40.5f);
+	glVertex2f(-40.0f, 40.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(-30.0f, 40.5f);
+	glVertex2f(-20.0f, 40.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(-10.0f, 40.5f);
+	glVertex2f(-0.0f, 40.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(10.0f, 40.5f);
+	glVertex2f(20.0f, 40.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(30.0f, 40.5f);
+	glVertex2f(40.0f, 40.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(50.0f, 40.5f);
+	glVertex2f(60.0f, 40.5f);
+	glEnd();
+	glBegin(GL_LINES);
+    glVertex2f(70.0f, 40.5f);
+	glVertex2f(80.0f, 40.5f);
+	glEnd();
+}
+//05
+void river()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(-1.0f, 95.0f, 0.0f);
+glScalef(120.0f, 120.0f,1.0f);
+
+glBegin(GL_QUADS);
+glColor3ub (30,144,255);
+//river with sky blue color
+glVertex2f(-1.0f, -0.70f);
+glVertex2f(-1.0f, -1.50f);
+glVertex2f(1.0f, -1.50f);
+glVertex2f(1.0f, -0.70f);
+glEnd();
+//between river and roadRakib
+glBegin(GL_QUADS);
+glColor3ub (240,230,140);
+glVertex2f(-1.0f, -0.70f);
+glVertex2f(-1.0f, -0.65f);
+glVertex2f(1.0f, -0.65f);
+glVertex2f(1.0f, -0.70f);
+glEnd();
+glPopMatrix();
+}
+//06
+void railing()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(50.0f, 30.0f, 0.0f);
+glScalef(80.0f, 78.0f,1.0f);
+
+//Vertical Bar
+for(float j=-90.0f; j<=90.0f; j+=0.05f)
+{
+glLineWidth(6.0);
+glBegin(GL_LINES);
+glColor3f(0.5f,0.0f,0.0f);
+glVertex2f(j,-0.04);
+glVertex2f(j,-0.18);
+glEnd();
+}
+//Horizontal Bar
+glBegin(GL_LINES);
+glColor3ub(60.0f,25.0f,10.0f);
+glVertex2f(-90.0,-0.08);
+glVertex2f(90.0,-0.08);
+glEnd();
+glBegin(GL_LINES);
+glColor3ub(60.0f,25.0f,10.0f);
+glVertex2f(-90.0,-0.16);
+glVertex2f(90.0,-0.16);
+glEnd();
+glPopMatrix();
+}
+//07
+void houseRakib()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+    //Whole House
+    glBegin(GL_QUADS);
+    glColor3ub(248, 167, 5);
+    glVertex2f(-88.0f,85.0f);
+    glVertex2f(-75.0f,85.0f);
+    glVertex2f(-75.0f,125.0f);
+    glVertex2f(-88.0f,125.0f);
+    glEnd();
+
+    //door
+    glBegin(GL_QUADS);
+    glColor3ub(25, 248, 5);
+    glVertex2f(-84.0f,85.0f);
+    glVertex2f(-80.0f,85.0f);
+    glVertex2f(-80.0f,95.0f);
+    glVertex2f(-84.0f,95.0f);
+    glEnd();
+
+    //window 1
+    glBegin(GL_QUADS);
+    glColor3ub(91, 133, 87);
+    glVertex2f(-86.0f,99.0f);
+    glVertex2f(-84.0f,99.0f);
+    glVertex2f(-84.0f,105.0f);
+    glVertex2f(-86.0f,105.0f);
+    glEnd();
+
+    //window2
+    glBegin(GL_QUADS);
+    glColor3ub(91, 133, 87);
+    glVertex2f(-86.0f+6,99.0f);
+    glVertex2f(-84.0f+6,99.0f);
+    glVertex2f(-84.0f+6,105.0f);
+    glVertex2f(-86.0f+6,105.0f);
+    glEnd();
+
+    //window 3
+    glBegin(GL_QUADS);
+    glColor3ub(91, 133, 87);
+    glVertex2f(-86.0f,99.0f+8);
+    glVertex2f(-84.0f,99.0f+8);
+    glVertex2f(-84.0f,105.0f+8);
+    glVertex2f(-86.0f,105.0f+8);
+    glEnd();
+
+    //window4
+    glBegin(GL_QUADS);
+    glColor3ub(91, 133, 87);
+    glVertex2f(-86.0f+6,99.0f+8);
+    glVertex2f(-84.0f+6,99.0f+8);
+    glVertex2f(-84.0f+6,105.0f+8);
+    glVertex2f(-86.0f+6,105.0f+8);
+    glEnd();
+
+    //window 5
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f,99.0f+16);
+    glVertex2f(-84.0f,99.0f+16);
+    glVertex2f(-84.0f,105.0f+16);
+    glVertex2f(-86.0f,105.0f+16);
+    glEnd();
+
+    //window 6
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f+6,99.0f+16);
+    glVertex2f(-84.0f+6,99.0f+16);
+    glVertex2f(-84.0f+6,105.0f+16);
+    glVertex2f(-86.0f+6,105.0f+16);
+    glEnd();
+
+    //Below houseRakib stand
+    glBegin(GL_QUADS);
+    glColor3ub(89, 67, 21);
+    glVertex2f(-89.5f,83.0f);
+    glVertex2f(-73.5f,83.0f);
+    glVertex2f(-73.5f,86.9f);
+    glVertex2f(-89.5f,86.9f);
+    glEnd();
+
+    glPopMatrix();
+}
+//08
+void house1()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(20.0f, 0.0f, 0.0f);
+
+    //Whole House
+    glBegin(GL_QUADS);
+    glColor3ub(5, 74, 248);
+    glVertex2f(-88.0f,85.0f);
+    glVertex2f(-75.0f,85.0f);
+    glVertex2f(-75.0f,125.0f);
+    glVertex2f(-88.0f,125.0f);
+    glEnd();
+
+    //door
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-84.0f,85.0f);
+    glVertex2f(-80.0f,85.0f);
+    glVertex2f(-80.0f,95.0f);
+    glVertex2f(-84.0f,95.0f);
+    glEnd();
+
+    //window 1
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f,99.0f);
+    glVertex2f(-84.0f,99.0f);
+    glVertex2f(-84.0f,105.0f);
+    glVertex2f(-86.0f,105.0f);
+    glEnd();
+
+    //window2
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f+6,99.0f);
+    glVertex2f(-84.0f+6,99.0f);
+    glVertex2f(-84.0f+6,105.0f);
+    glVertex2f(-86.0f+6,105.0f);
+    glEnd();
+
+    //window 3
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f,99.0f+8);
+    glVertex2f(-84.0f,99.0f+8);
+    glVertex2f(-84.0f,105.0f+8);
+    glVertex2f(-86.0f,105.0f+8);
+    glEnd();
+
+    //window4
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f+6,99.0f+8);
+    glVertex2f(-84.0f+6,99.0f+8);
+    glVertex2f(-84.0f+6,105.0f+8);
+    glVertex2f(-86.0f+6,105.0f+8);
+    glEnd();
+
+    //window 5
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f,99.0f+16);
+    glVertex2f(-84.0f,99.0f+16);
+    glVertex2f(-84.0f,105.0f+16);
+    glVertex2f(-86.0f,105.0f+16);
+    glEnd();
+
+    //window 6
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f+6,99.0f+16);
+    glVertex2f(-84.0f+6,99.0f+16);
+    glVertex2f(-84.0f+6,105.0f+16);
+    glVertex2f(-86.0f+6,105.0f+16);
+    glEnd();
+
+    //Below houseRakib stand
+    glBegin(GL_QUADS);
+    glColor3ub(89, 67, 21);
+    glVertex2f(-89.5f,83.0f);
+    glVertex2f(-73.5f,83.0f);
+    glVertex2f(-73.5f,86.9f);
+    glVertex2f(-89.5f,86.9f);
+    glEnd();
+
+    glPopMatrix();
+}
+//09
+void house2()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(130.0f, 0.0f, 0.0f);
+
+    //Whole House
+    glBegin(GL_QUADS);
+    glColor3ub(92, 92, 61);
+    glVertex2f(-88.0f,85.0f);
+    glVertex2f(-75.0f,85.0f);
+    glVertex2f(-75.0f,125.0f);
+    glVertex2f(-88.0f,125.0f);
+    glEnd();
+
+    //door
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-84.0f,85.0f);
+    glVertex2f(-80.0f,85.0f);
+    glVertex2f(-80.0f,95.0f);
+    glVertex2f(-84.0f,95.0f);
+    glEnd();
+
+    //window 1
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f,99.0f);
+    glVertex2f(-84.0f,99.0f);
+    glVertex2f(-84.0f,105.0f);
+    glVertex2f(-86.0f,105.0f);
+    glEnd();
+
+    //window2
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f+6,99.0f);
+    glVertex2f(-84.0f+6,99.0f);
+    glVertex2f(-84.0f+6,105.0f);
+    glVertex2f(-86.0f+6,105.0f);
+    glEnd();
+
+    //window 3
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f,99.0f+8);
+    glVertex2f(-84.0f,99.0f+8);
+    glVertex2f(-84.0f,105.0f+8);
+    glVertex2f(-86.0f,105.0f+8);
+    glEnd();
+
+    //window4
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f+6,99.0f+8);
+    glVertex2f(-84.0f+6,99.0f+8);
+    glVertex2f(-84.0f+6,105.0f+8);
+    glVertex2f(-86.0f+6,105.0f+8);
+    glEnd();
+
+    //window 5
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f,99.0f+16);
+    glVertex2f(-84.0f,99.0f+16);
+    glVertex2f(-84.0f,105.0f+16);
+    glVertex2f(-86.0f,105.0f+16);
+    glEnd();
+
+    //window 6
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f+6,99.0f+16);
+    glVertex2f(-84.0f+6,99.0f+16);
+    glVertex2f(-84.0f+6,105.0f+16);
+    glVertex2f(-86.0f+6,105.0f+16);
+    glEnd();
+
+    //Below houseRakib stand
+    glBegin(GL_QUADS);
+    glColor3ub(89, 67, 21);
+    glVertex2f(-89.5f,83.0f);
+    glVertex2f(-73.5f,83.0f);
+    glVertex2f(-73.5f,86.9f);
+    glVertex2f(-89.5f,86.9f);
+    glEnd();
+
+    glPopMatrix();
+}
+//10
+void house3()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(110.0f, 0.0f, 0.0f);
+
+    //Whole House
+    glBegin(GL_QUADS);
+    glColor3ub(5, 115, 130);
+    glVertex2f(-88.0f,85.0f);
+    glVertex2f(-75.0f,85.0f);
+    glVertex2f(-75.0f,125.0f);
+    glVertex2f(-88.0f,125.0f);
+    glEnd();
+
+    //door
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-84.0f,85.0f);
+    glVertex2f(-80.0f,85.0f);
+    glVertex2f(-80.0f,95.0f);
+    glVertex2f(-84.0f,95.0f);
+    glEnd();
+
+    //window 1
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f,99.0f);
+    glVertex2f(-84.0f,99.0f);
+    glVertex2f(-84.0f,105.0f);
+    glVertex2f(-86.0f,105.0f);
+    glEnd();
+
+    //window2
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f+6,99.0f);
+    glVertex2f(-84.0f+6,99.0f);
+    glVertex2f(-84.0f+6,105.0f);
+    glVertex2f(-86.0f+6,105.0f);
+    glEnd();
+
+    //window 3
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f,99.0f+8);
+    glVertex2f(-84.0f,99.0f+8);
+    glVertex2f(-84.0f,105.0f+8);
+    glVertex2f(-86.0f,105.0f+8);
+    glEnd();
+
+    //window4
+    glBegin(GL_QUADS);
+    glColor3ub(200, 92, 221);
+    glVertex2f(-86.0f+6,99.0f+8);
+    glVertex2f(-84.0f+6,99.0f+8);
+    glVertex2f(-84.0f+6,105.0f+8);
+    glVertex2f(-86.0f+6,105.0f+8);
+    glEnd();
+
+    //window 5
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f,99.0f+16);
+    glVertex2f(-84.0f,99.0f+16);
+    glVertex2f(-84.0f,105.0f+16);
+    glVertex2f(-86.0f,105.0f+16);
+    glEnd();
+
+    //window 6
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f+6,99.0f+16);
+    glVertex2f(-84.0f+6,99.0f+16);
+    glVertex2f(-84.0f+6,105.0f+16);
+    glVertex2f(-86.0f+6,105.0f+16);
+    glEnd();
+
+    //Below houseRakib stand
+    glBegin(GL_QUADS);
+    glColor3ub(89, 67, 21);
+    glVertex2f(-89.5f,83.0f);
+    glVertex2f(-73.5f,83.0f);
+    glVertex2f(-73.5f,86.9f);
+    glVertex2f(-89.5f,86.9f);
+    glEnd();
+
+    glPopMatrix();
+}
+//11
+void school()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(60.0f, 0.0f, 0.0f);
+glScalef(1.2f, 1.0f,1.0f);
+
+    //Whole School
+    glBegin(GL_QUADS);
+    glColor3ub(222, 49, 99);
+    glVertex2f(-88.0f,85.0f);
+    glVertex2f(-73.0f,85.0f);
+    glVertex2f(-73.0f,115.0f);
+    glVertex2f(-88.0f,115.0f);
+    glEnd();
+
+    //door
+    glBegin(GL_QUADS);
+    glColor3ub(50, 43, 65);
+    glVertex2f(-84.0f,85.0f);
+    glVertex2f(-77.0f,85.0f);
+    glVertex2f(-77.0f,93.0f);
+    glVertex2f(-84.0f,93.0f);
+    glEnd();
+
+    //window 1
+    glBegin(GL_QUADS);
+    glColor3ub(44, 35, 211);
+    glVertex2f(-86.0f,96.0f);
+    glVertex2f(-84.0f,96.0f);
+    glVertex2f(-84.0f,100.0f);
+    glVertex2f(-86.0f,100.0f);
+    glEnd();
+
+    //window2
+    glBegin(GL_QUADS);
+    glColor3ub(44, 35, 211);
+    glVertex2f(-86.0f+3,96.0f);
+    glVertex2f(-84.0f+3,96.0f);
+    glVertex2f(-84.0f+3,100.0f);
+    glVertex2f(-86.0f+3,100.0f);
+    glEnd();
+
+    //window3
+    glBegin(GL_QUADS);
+    glColor3ub(44, 35, 211);
+    glVertex2f(-86.0f+6,96.0f);
+    glVertex2f(-84.0f+6,96.0f);
+    glVertex2f(-84.0f+6,100.0f);
+    glVertex2f(-86.0f+6,100.0f);
+    glEnd();
+
+    //window4
+    glBegin(GL_QUADS);
+    glColor3ub(44, 35, 211);
+    glVertex2f(-86.0f+9,96.0f);
+    glVertex2f(-84.0f+9,96.0f);
+    glVertex2f(-84.0f+9,100.0f);
+    glVertex2f(-86.0f+9,100.0f);
+    glEnd();
+
+
+    //window 5
+    glBegin(GL_QUADS);
+    glColor3ub(218, 247, 166);
+    glVertex2f(-86.0f,94.0f+8);
+    glVertex2f(-84.0f,94.0f+8);
+    glVertex2f(-84.0f,98.0f+8);
+    glVertex2f(-86.0f,98.0f+8);
+    glEnd();
+
+    //window 6
+    glBegin(GL_QUADS);
+    glColor3ub(218, 247, 166);
+    glVertex2f(-86.0f+3,94.0f+8);
+    glVertex2f(-84.0f+3,94.0f+8);
+    glVertex2f(-84.0f+3,98.0f+8);
+    glVertex2f(-86.0f+3,98.0f+8);
+    glEnd();
+
+    //window7
+    glBegin(GL_QUADS);
+    glColor3ub(218, 247, 166);
+    glVertex2f(-86.0f+6,94.0f+8);
+    glVertex2f(-84.0f+6,94.0f+8);
+    glVertex2f(-84.0f+6,98.0f+8);
+    glVertex2f(-86.0f+6,98.0f+8);
+    glEnd();
+
+    //window8
+    glBegin(GL_QUADS);
+    glColor3ub(218, 247, 166);
+    glVertex2f(-86.0f+9,94.0f+8);
+    glVertex2f(-84.0f+9,94.0f+8);
+    glVertex2f(-84.0f+9,98.0f+8);
+    glVertex2f(-86.0f+9,98.0f+8);
+    glEnd();
+
+    //window 9
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f,92.0f+16);
+    glVertex2f(-84.0f,92.0f+16);
+    glVertex2f(-84.0f,96.0f+16);
+    glVertex2f(-86.0f,96.0f+16);
+    glEnd();
+
+    //window 10
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f+3,92.0f+16);
+    glVertex2f(-84.0f+3,92.0f+16);
+    glVertex2f(-84.0f+3,96.0f+16);
+    glVertex2f(-86.0f+3,96.0f+16);
+    glEnd();
+
+    //window 11
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f+6,92.0f+16);
+    glVertex2f(-84.0f+6,92.0f+16);
+    glVertex2f(-84.0f+6,96.0f+16);
+    glVertex2f(-86.0f+6,96.0f+16);
+    glEnd();
+
+    //window 12
+    glBegin(GL_QUADS);
+    glColor3ub(179, 248, 5);
+    glVertex2f(-86.0f+9,92.0f+16);
+    glVertex2f(-84.0f+9,92.0f+16);
+    glVertex2f(-84.0f+9,96.0f+16);
+    glVertex2f(-86.0f+9,96.0f+16);
+    glEnd();
+
+    //Below school stand
+    glBegin(GL_QUADS);
+    glColor3ub(83, 52, 35);
+    glVertex2f(-89.5f,83.0f);
+    glVertex2f(-68.5f,83.0f);
+    glVertex2f(-68.5f,86.9f);
+    glVertex2f(-89.5f,86.9f);
+    glEnd();
+
+    //Upward school Roof
+    glLineWidth(5);
+	glBegin(GL_LINES);
+	glColor3ub(92, 92, 61);
+    glVertex2f(-89.0f, 115.2f);
+	glVertex2f(-71.0f, 115.2f);
+	glEnd();
+
+    glPopMatrix();
+}
+//12
+void flag()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(60.0f, 0.0f, 0.0f);
+glScalef(1.2f, 1.0f,1.0f);
+
+    //Flag Stand
+    glLineWidth(8);
+	glBegin(GL_LINES);
+	glColor3ub(92, 92, 61);
+    glVertex2f(-71.0f, 85.2f);
+	glVertex2f(-71.0f, 110.2f);
+	glEnd();
+
+	//Flag Rectangle
+    glLineWidth(26);
+	glBegin(GL_LINES);
+	glColor3ub(0, 159, 94);
+    glVertex2f(-71.0f, 107.0f);
+	glVertex2f(-66.0f, 107.0f);
+	glEnd();
+
+	//Flag Circle
+    circleSolid(-68.5f,107.0f, 1.5,249,0,0);
+
+    glPopMatrix();
+}
+//13
+void tree()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(7.0f, 60.0f, 0.0f);
+glScalef(150.0f, 180.0f,1.0f);
+
+    //Tree stand
+    glBegin(GL_QUADS);
+    glColor3ub(92, 92, 61);
+    glVertex2f(-0.05f,-0.01f);
+    glVertex2f(-0.03f,-0.01f);
+    glVertex2f(-0.03f,0.24f);
+    glVertex2f(-0.05f,0.24f);
+    glEnd();
+
+    //Tree shield
+    glLineWidth(8);
+    glBegin(GL_LINES);
+    glColor3ub(92, 92, 61);
+    glVertex2f(-0.04f, 0.23f);
+    glVertex2f(-0.09f, 0.27f);
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex2f(-0.04f, 0.23f);
+    glVertex2f(0.01f, 0.27f);
+    glEnd();
+
+    glBegin(GL_LINES);
+    glVertex2f(-0.04f, 0.24f);
+    glVertex2f(-0.04f, 0.32f);
+    glEnd();
+
+    //Tree Leaves
+    circleSolid(-0.10f, 0.28f, 0.03,0, 255, 0);
+    circleSolid(-0.11f, 0.31f, 0.03,0, 255, 0);
+    circleSolid(-0.09f, 0.33f, 0.03,0, 255, 0);
+    circleSolid(-0.04f, 0.33f, 0.03,0, 255, 0);
+    circleSolid(0.0f, 0.33f, 0.03,0, 255, 0);
+    circleSolid(0.02f, 0.31f, 0.03,0, 255, 0);
+    circleSolid(0.03f, 0.28f, 0.03,0, 255, 0);
+    glEnd();
+
+    glPopMatrix();
+}
+//14
+void lambpost()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(50.0f, 0.0f, 0.0f);
+
+    //Lamp Stand
+	glColor3ub(0, 1, 0);
+    glLineWidth(15);
+	glBegin(GL_LINES);
+    glVertex2f(-2.0f, 20.0f);
+	glVertex2f(-2.0f, 70.0f);
+	glEnd();
+
+	//Hanging lamp bar
+    glColor3ub(55, 59, 58);
+    glLineWidth(11);
+	glBegin(GL_LINES);
+    glVertex2f(2.0f, 62.5f);
+	glVertex2f(-10.0f, 67.5f);
+	glEnd();
+
+	//Lamp
+    circleSolid(-8.5f,64.0f, 2.03,244, 233, 6 );
+
+    glPopMatrix();
+}
+//15
+void lambpost1()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(-70.0f, 0.0f, 0.0f);
+
+    //Lamp Stand
+	glColor3ub(0, 1, 0);
+    glLineWidth(15);
+	glBegin(GL_LINES);
+    glVertex2f(-2.0f, 20.0f);
+	glVertex2f(-2.0f, 70.0f);
+	glEnd();
+
+	//Hanging lamp bar
+    glColor3ub(55, 59, 58);
+    glLineWidth(11);
+	glBegin(GL_LINES);
+    glVertex2f(2.0f, 62.5f);
+	glVertex2f(-10.0f, 67.5f);
+	glEnd();
+
+	//Lamp
+    circleSolid(-8.5f,64.0f, 2.03,244, 233, 6 );
+
+    glPopMatrix();
+}
+//16
+void traflight()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(0.0f, 40.0f, 0.0f);
+
+    //Vertical Stand of traffic light
+	glColor3ub(83, 52, 35);
+    glLineWidth(15);
+	glBegin(GL_LINES);
+    glVertex2f(-2.0f, 27.5f);
+	glVertex2f(-2.0f, 65.5f);
+	glEnd();
+
+    //Upper Horizontal Stand of traffic light
+    glColor3ub(55, 59, 58);
+    glLineWidth(25);
+	glBegin(GL_LINES);
+    glVertex2f(2.0f, 65.5f);
+	glVertex2f(-10.0f, 65.5f);
+	glEnd();
+
+	//Traffic rgb light
+	glPointSize(15.0);
+	glBegin(GL_POINTS);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex2f(-8.0f, 65.5f);
+	glEnd();
+
+	glBegin(GL_POINTS);
+    glColor3ub(252, 240, 0 );
+	glVertex2f(-5.0f, 65.5f);
+	glEnd();
+
+	glBegin(GL_POINTS);
+    glColor3ub(0, 251, 71 );
+	glVertex2f(-2.0f, 65.5f);
+	glEnd();
+
+	glPopMatrix();
+}
+//17
+void sun()
+{
+glPushMatrix();
+glTranslatef( 0.0f,0.0f,0.0f);
+glRotatef(_angle1, 0.0f, 0.0f,1.0f);
+glTranslatef( 0.0f,0.0f,0.0f);
+
+    circleSolid(90.0f,120.0f,8.0,253, 208, 23);
+
+    glPopMatrix();
+}
+//18
+void carRakib()
+{
+glMatrixMode(GL_MODELVIEW);
+
+glPushMatrix();
+glTranslatef(_move1, 83.0f, 0.0f);
+glScalef(90.0f, 90.0f,1.0f);
+
+    glBegin(GL_POLYGON);
+    glColor3ub(25,25,112);
+    glVertex2f(-0.42f, -0.25f);
+    glVertex2f(-0.38f, -0.26f);
+    glVertex2f(-0.35f, -0.31f);
+    glVertex2f(-0.61f, -0.31f);
+    glVertex2f(-0.62f, -0.30f);
+    glVertex2f(-0.62f, -0.25f);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(0,0,0);
+    glVertex2f(-0.58f, -0.25f);
+    glVertex2f(-0.55f, -0.19f);
+    glVertex2f(-0.45f, -0.19f);
+    glVertex2f(-0.42f, -0.25f);
+    glVertex2f(-0.58f, -0.25f);
+    glEnd();
+
+    glLineWidth(1.0);
+    glBegin(GL_LINES);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex2f(-0.50f, -0.19f);
+	glVertex2f(-0.50f, -0.25f);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex2f(-0.58f, -0.25f);
+    glVertex2f(-0.55f, -0.19f);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(-0.55f, -0.19f);
+    glVertex2f(-0.45f, -0.19f);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(-0.45f, -0.19f);
+    glVertex2f(-0.42f, -0.25f);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(-0.42f, -0.25f);
+    glVertex2f(-0.58f, -0.25f);
+	glEnd();
+
+	glLineWidth(5.0);
+	glBegin(GL_LINES);
+	glColor3ub(204,0,0);
+	glVertex2f(-0.62f, -0.29f);
+    glVertex2f(-0.62f, -0.26f);
+	glEnd();
+
+    // Front wheel
+    glPushMatrix();
+    glTranslatef(-0.55f, -0.31f, 0.0f); // Translate to wheel position
+    glRotatef(_angle1, 0.0f, 0.0f, 1.0f); // Apply rotation
+    circleSolid(0.0f, 0.0f, 0.03f, 0.0f, 0.0f, 0.0f); // Draw wheel
+    glPopMatrix();
+
+    // Rear wheel
+    glPushMatrix();
+    glTranslatef(-0.42f, -0.31f, 0.0f); // Translate to wheel position
+    glRotatef(_angle1, 0.0f, 0.0f, 1.0f); // Apply rotation
+    circleSolid(0.0f, 0.0f, 0.03f, 0.0f, 0.0f, 0.0f); // Draw wheel
+    glPopMatrix();
+
+    glPopMatrix();
+}
+//19
+void car2()
+{
+glMatrixMode(GL_MODELVIEW);
+
+glPushMatrix();
+glTranslatef(_move1-30, 58.0f, 0.0f);
+glScalef(90.0f, 90.0f,1.0f);
+
+    glBegin(GL_POLYGON);
+    glColor3ub(255,255,0);
+    glVertex2f(-0.42f, -0.25f);
+    glVertex2f(-0.38f, -0.26f);
+    glVertex2f(-0.35f, -0.31f);
+    glVertex2f(-0.61f, -0.31f);
+    glVertex2f(-0.62f, -0.30f);
+    glVertex2f(-0.62f, -0.25f);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(0,0,0);
+    glVertex2f(-0.58f, -0.25f);
+    glVertex2f(-0.55f, -0.19f);
+    glVertex2f(-0.45f, -0.19f);
+    glVertex2f(-0.42f, -0.25f);
+    glVertex2f(-0.58f, -0.25f);
+    glEnd();
+
+    glLineWidth(2.0);
+    glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 0.0f);
+	glVertex2f(-0.50f, -0.19f);
+	glVertex2f(-0.50f, -0.25f);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 0.0f);
+	glVertex2f(-0.58f, -0.25f);
+    glVertex2f(-0.55f, -0.19f);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 0.0f);
+    glVertex2f(-0.55f, -0.19f);
+    glVertex2f(-0.45f, -0.19f);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 0.0f);
+    glVertex2f(-0.45f, -0.19f);
+    glVertex2f(-0.42f, -0.25f);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 0.0f);
+    glVertex2f(-0.42f, -0.25f);
+    glVertex2f(-0.58f, -0.25f);
+	glEnd();
+
+	glLineWidth(5.0);
+	glBegin(GL_LINES);
+	glColor3ub(204,0,0);
+	glVertex2f(-0.62f, -0.29f);
+    glVertex2f(-0.62f, -0.26f);
+	glEnd();
+
+    // Front wheel
+    glPushMatrix();
+    glTranslatef(-0.55f, -0.31f, 0.0f); // Translate to wheel position
+    glRotatef(_angle1, 0.0f, 0.0f, 1.0f); // Apply rotation
+    circleSolid(0.0f, 0.0f, 0.03f, 0.0f, 0.0f, 0.0f); // Draw wheel
+    glPopMatrix();
+
+    // Rear wheel
+    glPushMatrix();
+    glTranslatef(-0.42f, -0.31f, 0.0f); // Translate to wheel position
+    glRotatef(_angle1, 0.0f, 0.0f, 1.0f); // Apply rotation
+    circleSolid(0.0f, 0.0f, 0.03f, 0.0f, 0.0f, 0.0f); // Draw wheel
+    glPopMatrix();
+
+    glPopMatrix();
+}
+//20
+void clouds()
+{
+glMatrixMode(GL_MODELVIEW);
+
+glPushMatrix();
+glTranslatef(_move1, 90.0f, 0.0f);
+glScalef(120.0f, 120.0f,1.0f);
+
+    circleSolid(0.23f,0.43f,0.04,255, 255, 255);
+    circleSolid(0.21f,0.42f,0.04,255, 255, 255);
+    circleSolid(0.21f,0.40f,0.04,255, 255, 255);
+    circleSolid(0.23f,0.41f,0.04,255, 255, 255);
+    circleSolid(0.19f,0.43f,0.04,255, 255, 255);
+    circleSolid(0.19f,0.40f,0.04,255, 255, 255);
+    circleSolid(0.17f,0.42f,0.04,255, 255, 255);
+    circleSolid(0.18f,0.41f,0.04,255, 255, 255);
+    circleSolid(0.16f,0.41f,0.04,255, 255, 255);
+
+    circleSolid(-0.43f,0.38f,0.04,255, 255, 255);
+    circleSolid(-0.41f,0.37f,0.04,255, 255, 255);
+    circleSolid(-0.41f,0.36f,0.04,255, 255, 255);
+    circleSolid(-0.43f,0.37f,0.04,255, 255, 255);
+    circleSolid(-0.39f,0.38f,0.04,255, 255, 255);
+    circleSolid(-0.39f,0.36f,0.04,255, 255, 255);
+    circleSolid(-0.37f,0.37f,0.04,255, 255, 255);
+    circleSolid(-0.38f,0.36f,0.04,255, 255, 255);
+    circleSolid(-0.36f,0.37f,0.04,255, 255, 255);
+
+    circleSolid(0.43f,0.38f,0.04,255, 255, 255);
+    circleSolid(0.41f,0.37f,0.04,255, 255, 255);
+    circleSolid(0.41f,0.36f,0.04,255, 255, 255);
+    circleSolid(0.43f,0.37f,0.04,255, 255, 255);
+    circleSolid(0.39f,0.38f,0.04,255, 255, 255);
+    circleSolid(0.39f,0.36f,0.04,255, 255, 255);
+    circleSolid(0.37f,0.37f,0.04,255, 255, 255);
+    circleSolid(0.38f,0.36f,0.04,255, 255, 255);
+    circleSolid(0.36f,0.37f,0.04,255, 255, 255);
+
+    circleSolid(-0.13f,0.43f,0.04,255, 255, 255);
+    circleSolid(-0.11f,0.42f,0.04,255, 255, 255);
+    circleSolid(-0.11f,0.40f,0.04,255, 255, 255);
+    circleSolid(-0.13f,0.41f,0.04,255, 255, 255);
+    circleSolid(-0.09f,0.43f,0.04,255, 255, 255);
+    circleSolid(-0.09f,0.40f,0.04,255, 255, 255);
+    circleSolid(-0.07f,0.42f,0.04,255, 255, 255);
+    circleSolid(-0.04f,0.41f,0.04,255, 255, 255);
+    circleSolid(-0.06f,0.41f,0.04,255, 255, 255);
+    glPopMatrix();
+}
+//21
+void cloudsR()
+{
+glMatrixMode(GL_MODELVIEW);
+
+glPushMatrix();
+glTranslatef(_move1, 90.0f, 0.0f);
+glScalef(120.0f, 120.0f,1.0f);
+
+    circleSolid(0.23f,0.43f,0.04,210, 211, 214);
+    circleSolid(0.21f,0.42f,0.04,210, 211, 214);
+    circleSolid(0.21f,0.40f,0.04,210, 211, 214);
+    circleSolid(0.23f,0.41f,0.04,210, 211, 214);
+    circleSolid(0.19f,0.43f,0.04,210, 211, 214);
+    circleSolid(0.19f,0.40f,0.04,210, 211, 214);
+    circleSolid(0.17f,0.42f,0.04,210, 211, 214);
+    circleSolid(0.18f,0.41f,0.04,210, 211, 214);
+    circleSolid(0.16f,0.41f,0.04,210, 211, 214);
+
+    circleSolid(-0.43f,0.38f,0.04,210, 211, 214);
+    circleSolid(-0.41f,0.37f,0.04,210, 211, 214);
+    circleSolid(-0.41f,0.36f,0.04,210, 211, 214);
+    circleSolid(-0.43f,0.37f,0.04,210, 211, 214);
+    circleSolid(-0.39f,0.38f,0.04,210, 211, 214);
+    circleSolid(-0.39f,0.36f,0.04,210, 211, 214);
+    circleSolid(-0.37f,0.37f,0.04,210, 211, 214);
+    circleSolid(-0.38f,0.36f,0.04,210, 211, 214);
+    circleSolid(-0.36f,0.37f,0.04,210, 211, 214);
+
+    circleSolid(0.43f,0.38f,0.04,210, 211, 214);
+    circleSolid(0.41f,0.37f,0.04,210, 211, 214);
+    circleSolid(0.41f,0.36f,0.04,210, 211, 214);
+    circleSolid(0.43f,0.37f,0.04,210, 211, 214);
+    circleSolid(0.39f,0.38f,0.04,210, 211, 214);
+    circleSolid(0.39f,0.36f,0.04,210, 211, 214);
+    circleSolid(0.37f,0.37f,0.04,210, 211, 214);
+    circleSolid(0.38f,0.36f,0.04,210, 211, 214);
+    circleSolid(0.36f,0.37f,0.04,210, 211, 214);
+
+    circleSolid(-0.13f,0.43f,0.04,210, 211, 214);
+    circleSolid(-0.11f,0.42f,0.04,210, 211, 214);
+    circleSolid(-0.11f,0.40f,0.04,210, 211, 214);
+    circleSolid(-0.13f,0.41f,0.04,210, 211, 214);
+    circleSolid(-0.09f,0.43f,0.04,210, 211, 214);
+    circleSolid(-0.09f,0.40f,0.04,210, 211, 214);
+    circleSolid(-0.07f,0.42f,0.04,210, 211, 214);
+    circleSolid(-0.04f,0.41f,0.04,210, 211, 214);
+    circleSolid(-0.06f,0.41f,0.04,210, 211, 214);
+    glPopMatrix();
+}
+//22
+void windmill()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+    glLineWidth(10);
+	glBegin(GL_LINES);
+	glColor3ub(23, 163, 37);
+    glVertex2f(70.5f, 85.2f);
+	glVertex2f(72.0f, 130.2f);
+    glEnd();
+    glBegin(GL_LINES);
+    glColor3ub(23, 163, 37);
+    glVertex2f(73.5f, 85.2f);
+	glVertex2f(72.0f, 130.2f);
+	glEnd();
+glPopMatrix();
+}
+//23
+void winwheel()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+
+glTranslatef(72.0f, 130.0f, 0.0f);
+glRotatef(_angle2, 0.0f, 0.0f,1.0f);
+glTranslatef(-72.0f, -130.0f, 0.0f);
+
+    glLineWidth(25);
+
+	glBegin(GL_LINES);
+	glColor3ub(0,0,255);
+    glVertex2f(72.0f, 130.0f);
+	glVertex2f(72.0f, 115.0f);
+    glEnd();
+	glBegin(GL_LINES);
+	glColor3ub(0,0,255);
+    glVertex2f(72.0f, 130.0f);
+	glVertex2f(72.0f, 145.0f);
+    glEnd();
+	glBegin(GL_LINES);
+	glColor3ub(0,0,255);
+    glVertex2f(72.0f, 130.0f);
+	glVertex2f(57.0f, 130.0f);
+    glEnd();
+	glBegin(GL_LINES);
+	glColor3ub(0,0,255);
+    glVertex2f(72.0f, 130.0f);
+	glVertex2f(87.0f, 130.0f);
+	glEnd();
+
+    circleSolid(72.0f,130.0f, 2.4, 255, 0, 0);
+
+    glPopMatrix();
+}
+//24
+void skyN()
+{
+    glBegin(GL_QUADS);
+    glColor3ub(0, 0, 0);
+    glVertex2f(-90.64f,85.64f);
+    glVertex2f(90.64f,85.64f);
+    glVertex2f(90.64f,150.64f);
+    glVertex2f(-90.64f,150.64f);
+    glEnd();
+}
+//25
+void starRakib()
+{
+    //Night Moon
+   circleSolid(30,140.0,8.0,255.0f, 255.0f, 255.0f);
+   circleSolid(29.0f,142.0,6.7,0.0f, 0.0f, 0.0f);
+   glEnd();
+
+    //Night Stars
+   circleSolid(40,130.0,0.9,255.0f, 255.0f, 255.0f);
+   circleSolid(20,130.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-20,130.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-40,130.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-70,150.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-16,140.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-6,133.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(0,110.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(10,116.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(88,130.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(80,150.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(70,140.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(65,129.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(16,120.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(22,117.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(54,100.0,1.0,255.0f, 255.0f, 255.0f);
+   circleSolid(-80,150.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(67,144.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(45,147.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-16,130.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-22,122.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-77,130.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-35,138.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-76,144.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-87,137.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-84,136.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-55,122.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-66,139.0,0.6,255.0f, 255.0f, 255.0f);
+   circleSolid(-70,133.0,0.6,255.0f, 255.0f, 255.0f);
+   glEnd();
+}
+//26
+void boat()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+glTranslatef(_move3, 85.0f, 0.0f);
+glScalef(105.0f, 105.0f,1.0f);
+
+glBegin(GL_QUADS);
+glColor3f(1.0f, 0.0f, 0.0f);
+glVertex2f(-0.03f, -0.92f);
+glVertex2f(0.03f,-0.92f);
+glVertex2f(0.13f, -0.85f);
+glVertex2f(-0.13f,-0.85f);
+glEnd();
+
+glBegin(GL_QUADS);
+glColor3f(0.0f, 1.0f, 0.0f);
+glVertex2f(0.10f, -0.85f);
+glVertex2f(-0.10f,-0.85f);
+glVertex2f(-0.10f, -0.83f);
+glVertex2f(0.10f, -0.83f);
+glEnd();
+
+glBegin(GL_QUADS);
+glColor3f(0.0f, 0.0f, 1.0f);
+glVertex2f(0.07f, -0.83f);
+glVertex2f(-0.07f,-0.83f);
+glVertex2f(-0.07f, -0.81f);
+glVertex2f(0.07f, -0.81f);
+glEnd();
+
+glBegin(GL_QUADS);
+glColor3f(1.0f, 1.0f, 1.0f);
+glVertex2f(-0.05f, -0.81f);
+glVertex2f(-0.04f,-0.81f);
+glVertex2f(-0.04f, -0.79f);
+glVertex2f(-0.05f, -0.79f);
+glEnd();
+
+glBegin(GL_QUADS);
+glColor3f(1.0f, 1.0f, 1.0f);
+glVertex2f(-0.01f, -0.81f);
+glVertex2f(0.0f,-0.81f);
+glVertex2f(0.0f, -0.79f);
+glVertex2f(-0.01f, -0.79f);
+glEnd();
+
+glBegin(GL_QUADS);
+glColor3f(1.0f, 1.0f, 1.0f);
+glVertex2f(0.03f, -0.81f);
+glVertex2f(0.04f,-0.81f);
+glVertex2f(0.04f, -0.79f);
+glVertex2f(0.03f, -0.79f);
+glEnd();
+glPopMatrix();
+}
+//27
+void drawWaterLevel()
+{
+    // Set water color (blue)
+    glColor3ub(30,144,255);
+    glBegin(GL_POLYGON);
+    // Draw a rectangle representing the water level
+    glVertex2f(-90, -30);
+    glVertex2f(90, -30);
+    glVertex2f(90, -20+ waterLevel);
+    glVertex2f(80, -30+ waterLevel);
+    glVertex2f(50, -20+ waterLevel);
+    glVertex2f(-50, -30+ waterLevel);
+    glVertex2f(-70, -20+ waterLevel);
+    glVertex2f(-90, -30+ waterLevel);
+    glEnd();
+}
+//28
+void Rain(int value)
+{
+if(rainday)
+{
+rain -= 100.09f;
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+glTranslatef(-90.0f, -30.0f, 0.0f);
+glBegin(GL_POINTS);
+for(int i=1;i<=1200;i++)
+{
+int x = rand() % 1200;  // Random x-coordinate (screen width)
+int y = rand() % 1000;  // Random y-coordinate (screen height)
+glLineWidth(3);
+glBegin(GL_LINES);
+glColor3f(1.0, 1.0, 1.0);
+glVertex2f(x,y);
+glVertex2f(x+5,y+9);
+glEnd();
+}
+// Increase water level
+waterLevel += 0.2f; // Increment water level
+if (waterLevel > 105) // Limit the water level to prevent overflow
+waterLevel = 105;
+glPopMatrix();
+glFlush();
+glutPostRedisplay();
+glutTimerFunc(10, Rain, 0);
+}
+}
+//29
+void bench()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+glTranslatef(-80.0f, 82.0f, 0.0f);
+glScalef(4.0f, 3.0f,1.0f);
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 123, 3);
+    glVertex2f(3, -3);
+    glVertex2f(3.5964184138402, -2.0014137599239);
+    glVertex2f(7.4142044638252, -1.9862034569359);
+    glVertex2f(8, -3);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 65, 3);
+    glVertex2f(3.4138947779843, -4.2221179961701);
+    glVertex2f(3.3986844749963, -2.9900834541431);
+    glVertex2f(3.794152352684, -2.9900834541431);
+    glVertex2f(3.809362655672, -4.2221179961701);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 65, 3);
+    glVertex2f(7.2012602219933, -4.2069076931821);
+    glVertex2f(7.2012602219933, -2.9900834541431);
+    glVertex2f(7.596728099681, -2.9900834541431);
+    glVertex2f(7.611938402669, -4.2069076931821);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 65, 3);
+    glVertex2f(4, -2);
+    glVertex2f(4,0);
+    glVertex2f(4.39,0);
+    glVertex2f(4.3873541692155, -1.9862034569359);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 65, 3);
+    glVertex2f(6.5928481024738, -2.0014137599239);
+    glVertex2f(6.54,0);
+    glVertex2f(7,0);
+    glVertex2f(7,-2);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(177, 252, 3);
+    glVertex2f(3.6116287168282, -1.5907355792482);
+    glVertex2f(3.6116287168282, -1.1952677015605);
+    glVertex2f(7.4142044638252, -1.2104780045485);
+    glVertex2f(7.4142044638252, -1.5603149732722);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(177, 252, 3);
+    glVertex2f(3.5812081108522, -0.8150101268608);
+    glVertex2f(3.6116287168282, -0.4043319461851);
+    glVertex2f(7.4142044638252, -0.3891216431972);
+    glVertex2f(7.4142044638252, -0.7997998238728);
+    glEnd();
+
+glPopMatrix();
+}
+//30
+void bench1()
+{
+glMatrixMode(GL_MODELVIEW);
+glPushMatrix();
+glTranslatef(40.0f, 82.0f, 0.0f);
+glScalef(4.0f, 3.0f,1.0f);
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 123, 3);
+    glVertex2f(3, -3);
+    glVertex2f(3.5964184138402, -2.0014137599239);
+    glVertex2f(7.4142044638252, -1.9862034569359);
+    glVertex2f(8, -3);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 65, 3);
+    glVertex2f(3.4138947779843, -4.2221179961701);
+    glVertex2f(3.3986844749963, -2.9900834541431);
+    glVertex2f(3.794152352684, -2.9900834541431);
+    glVertex2f(3.809362655672, -4.2221179961701);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 65, 3);
+    glVertex2f(7.2012602219933, -4.2069076931821);
+    glVertex2f(7.2012602219933, -2.9900834541431);
+    glVertex2f(7.596728099681, -2.9900834541431);
+    glVertex2f(7.611938402669, -4.2069076931821);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 65, 3);
+    glVertex2f(4, -2);
+    glVertex2f(4,0);
+    glVertex2f(4.39,0);
+    glVertex2f(4.3873541692155, -1.9862034569359);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(252, 65, 3);
+    glVertex2f(6.5928481024738, -2.0014137599239);
+    glVertex2f(6.54,0);
+    glVertex2f(7,0);
+    glVertex2f(7,-2);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(177, 252, 3);
+    glVertex2f(3.6116287168282, -1.5907355792482);
+    glVertex2f(3.6116287168282, -1.1952677015605);
+    glVertex2f(7.4142044638252, -1.2104780045485);
+    glVertex2f(7.4142044638252, -1.5603149732722);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3ub(177, 252, 3);
+    glVertex2f(3.5812081108522, -0.8150101268608);
+    glVertex2f(3.6116287168282, -0.4043319461851);
+    glVertex2f(7.4142044638252, -0.3891216431972);
+    glVertex2f(7.4142044638252, -0.7997998238728);
+    glEnd();
+
+glPopMatrix();
+}
+//31
+void displayRakib() //hello
+{
+glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+glClear(GL_COLOR_BUFFER_BIT); // Clear the color buffer (background)
+sky();
+houseRakib();
+house1();
+house2();
+house3();
+school();
+flag();
+tree();
+river();
+ground();
+bench();
+bench1();
+roadRakib();
+carRakib();
+car2();
+clouds();
+sun();
+windmill();
+winwheel();
+traflight();
+lambpost();
+lambpost1();
+railing();
+boat();
+
+glFlush();
+glutSwapBuffers();
+}
+
+void displayR()
+{
+glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+glClear(GL_COLOR_BUFFER_BIT); // Clear the color buffer (background)
+skyR();
+houseRakib();
+house1();
+house2();
+house3();
+school();
+flag();
+tree();
+river();
+ground();
+roadRakib();
+carRakib();
+car2();
+cloudsR();
+windmill();
+winwheel();
+drawWaterLevel();
+bench();
+bench1();
+traflight();
+lambpost();
+lambpost1();
+railing();
+boat();
+
+glFlush();
+glutSwapBuffers();
+}
+//32
+void displayN()
+{
+glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+glClear(GL_COLOR_BUFFER_BIT); // Clear the color buffer (background)
+
+skyN();
+starRakib();
+houseRakib();
+house1();
+house2();
+house3();
+school();
+flag();
+tree();
+river();
+ground();
+bench();
+bench1();
+roadRakib();
+carRakib();
+car2();
+windmill();
+winwheel();
+traflight();
+lambpost();
+lambpost1();
+railing();
+boat();
+
+glFlush();
+glutSwapBuffers();
+}
+
+void displayNR()
+{
+glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+glClear(GL_COLOR_BUFFER_BIT); // Clear the color buffer (background)
+skyN();
+starRakib();
+houseRakib();
+house1();
+house2();
+house3();
+school();
+flag();
+tree();
+river();
+ground();
+roadRakib();
+carRakib();
+car2();
+windmill();
+winwheel();
+drawWaterLevel();
+bench();
+bench1();
+traflight();
+lambpost();
+lambpost1();
+railing();
+boat();
+
+glFlush();
+glutSwapBuffers();
+}
+
+void init()
+{
+glLoadIdentity();
+glMatrixMode(GL_MODELVIEW);
+gluOrtho2D(-90,90,-30,150);
+}
+
+void handleKeypress(unsigned char key, int x, int y)
+{
+switch (key)
+{
+
+case 'n':
+    rainday = false;
+    waterLevel = 0.0;
+glutPostRedisplay();
+glutDisplayFunc(displayN);
+break;
+
+case 'r':
+        rainday = true;
+        Rain(rain);
+glutPostRedisplay();
+glutDisplayFunc(displayR);
+break;
+
+case 't':
+        rainday = true;
+        Rain(rain);
+glutPostRedisplay();
+glutDisplayFunc(displayNR);
+break;
+
+case 's':
+        rainday = false;
+        Rain(rain);
+        _angle1=0.0;
+glutPostRedisplay();
+break;
+
+case 'd':
+        rainday = false;
+        Rain(rain);
+        waterLevel = 0.0;
+        _angle1=0.0;
+glutPostRedisplay();
+glutDisplayFunc(displayRakib);
+break;
+
+}
+}
+
+//33
+void updatesun(int value)
+{
+    _angle1+=0.05f;
+    if(_angle1 > 20.0)
+    {
+        _angle1=20;
+    }
+	glutPostRedisplay(); //Notify GLUT that the displayRakib has changed
+
+	glutTimerFunc(30, updatesun, 0); //Notify GLUT to call update again in 30 milliseconds
+}
+//34
+void updatecloud(int value)
+{
+ _move1 += 0.1;
+if(_move1>150.0f)
+{
+_move1=-90.0f;
+}
+glutPostRedisplay(); //Notify GLUT that the displayRakib has changed
+
+ glutTimerFunc(20, updatecloud, 0); //Notify GLUT to call update again in 20 milliseconds
+}
+//35
+void updatecar(int value)
+{
+ _move1 += 0.3f;
+if(_move1>150.0f)
+{
+_move1=-90.0f;
+}
+glutPostRedisplay(); //Notify GLUT that the displayRakib has changed
+
+glutTimerFunc(20, updatecar, 0); //Notify GLUT to call update again in 20 milliseconds
+}
+//36
+void updatecar2(int value)
+{
+ _move1 += 0.1f;
+if(_move1>150.0f)
+{
+_move1=-90.0f;
+}
+glutPostRedisplay(); //Notify GLUT that the displayRakib has changed
+
+glutTimerFunc(20, updatecar2, 0); //Notify GLUT to call update again in 20 milliseconds
+}
+//37
+void updatewinwheell(int value)
+{
+    _angle2+=0.5f;
+   if(_angle2 > 360.0)
+   {
+        _angle2=-360;
+    }
+	glutPostRedisplay(); //Notify GLUT that the displayRakib has changed
+
+	glutTimerFunc(20,updatewinwheell, 0); //Notify GLUT to call update again in 20 milliseconds
+}
+//38
+void updateboat(int value)
+{
+ _move3 += 0.5;
+if(_move3>90.0f)
+{
+_move3=-90.0f;
+}
+glutPostRedisplay(); //Notify GLUT that the displayRakib has changed
+
+ glutTimerFunc(20, updateboat, 0); //Notify GLUT to call update again in 20 milliseconds
+}
+
+
+//--------------------------- rakib end
+
+
+
+//--------------------------- riyadh start
 float _trainMove = 0.0f;
 float _carMove = -90.0f;
 float _newTruckMove = -109.0f;
@@ -1716,44 +3534,6 @@ void tree2Leaf(int x, int y, float leafRadius, int leafCount, float radius, floa
 
 void tree2()
 {
-    {/*glBegin(GL_POLYGON);    //body
-        glColor3ub(165, 114, 8);
-
-        glVertex2f(30, 55);
-        glVertex2f(34, 55);
-        glVertex2f(32, 80);
-
-    glEnd();
-
-    float x = 26, y = 75;
-    bool check = true;
-    for(y ; y<96; y+=2.5)
-    {
-        x+=0.7;
-        if(check)
-        {
-            check = false;
-            x+=0.2;
-            y-=0.5;
-        }
-        else
-        {
-            check = true;
-        }
-
-        circle2(x, y, 2, 84, 115, 26);
-    }
-
-    for(y ; y>74; y-=2.5)
-    {
-        x+=0.7;
-
-        circle2(x, y, 2, 84, 115, 26);
-    }*/
-
-    // Draw Trunk (Brown)
-    }
-
     glBegin(GL_POLYGON);    //body
         glColor3ub(165, 114, 8);
 
@@ -1839,6 +3619,7 @@ void drawRain(int dropCount)
         float x = (rand() % 181) - 90; // Random x in range (-90 to 90)
         float y = (rand() % 181) - 30; // Random y in range (-30 to 150)
 
+        glLineWidth(1.5);
         glVertex2f(x, y);
         glVertex2f(x, y - 5); // Slightly downward line for rain effect
     }
@@ -1916,7 +3697,7 @@ void allObj1()
 
 }
 
-void display()
+void displayRiyadh()
 {
 	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
     glClearColor(rr,gg,bb, 1.0f);
@@ -1942,8 +3723,9 @@ void display()
 	glFlush();  // Render now
 }
 
+//------------------------------------- riyadh end
 
-void handleMouse(int button, int state, int x, int y) {
+void handleMouseR(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 	    if(!isRaining)
@@ -1968,38 +3750,135 @@ void handleMouse(int button, int state, int x, int y) {
 }
 
 
-void handleKeypress(unsigned char key, int x, int y) {
-	switch (key) {
-	    case 'd':
-	        rr = 0.4f; gg = 0.698f;bb = 0.996f;
-            isRaining = false;
-            isNight = false;
+void handleKeypressR(unsigned char key, int x, int y) {
+
+    switch (key)
+    {
+        case '1':
+            rakib = true;
+            riyadh = false;
+            siam = false;
+            fahad = false;
+            glutPostRedisplay();
+            glutDisplayFunc(displayRakib);
+        break;
+
+        case '2':
+            rakib = false;
+            riyadh = true;
+            siam = false;
+            fahad = false;
+            glutPostRedisplay();
+            glutDisplayFunc(displayRiyadh);
+        break;
+
+        case '3':
+            rakib = false;
+            riyadh = false;
+            siam = true;
+            fahad = false;
+            glutPostRedisplay();
+            glutDisplayFunc(displayRakib);
+        break;
+
+        case '4':
+            rakib = false;
+            riyadh = false;
+            siam = false;
+            fahad = true;
+            glutPostRedisplay();
+            glutDisplayFunc(displayRakib);
+        break;
+    }
+
+
+    if(riyadh)
+    {
+        switch (key) {
+            case 'd':
+                rr = 0.4f; gg = 0.698f;bb = 0.996f;
+                isRaining = false;
+                isNight = false;
+                glutPostRedisplay();
+                break;
+
+            case 'r':
+                rr = 0.529f; gg = 0.627f ;bb = 0.745f;
+                isRaining = true;
+                isNight = false;
+                glutPostRedisplay();
+                break;
+
+            case 'n':
+                rr = 0.25f; gg = 0.25f; bb = 0.35f;
+                isNight = true;
+                isRaining = false;
+                glutPostRedisplay();
+                break;
+            case 'b':
+                rr = 0.25f; gg = 0.25f; bb = 0.35f;
+                isNight = true;
+                isRaining = true;
+                glutPostRedisplay();
+                break;
+
+            glutPostRedisplay();
+        }
+    }
+
+
+	if(rakib)
+    {
+        switch (key)
+        {
+            case 'n':
+                rainday = false;
+                waterLevel = 0.0;
+            glutPostRedisplay();
+            glutDisplayFunc(displayN);
+            break;
+
+            case 'r':
+            rainday = true;
+            Rain(rain);
+            glutPostRedisplay();
+            glutDisplayFunc(displayR);
+            break;
+
+            case 't':
+                    rainday = true;
+                    Rain(rain);
+            glutPostRedisplay();
+            glutDisplayFunc(displayNR);
+            break;
+
+            case 's':
+                    rainday = false;
+                    Rain(rain);
+                    _angle1=0.0;
             glutPostRedisplay();
             break;
 
-        case 'r':
-            rr = 0.529f; gg = 0.627f ;bb = 0.745f;
-            isRaining = true;
-            isNight = false;
+            case 'd':
+                    rainday = false;
+                    Rain(rain);
+                    waterLevel = 0.0;
+                    _angle1=0.0;
             glutPostRedisplay();
+            glutDisplayFunc(displayRakib);
             break;
 
-        case 'n':
-            rr = 0.25f; gg = 0.25f; bb = 0.35f;
-            isNight = true;
-            isRaining = false;
-            glutPostRedisplay();
-            break;
-        case 'b':
-            rr = 0.25f; gg = 0.25f; bb = 0.35f;
-            isNight = true;
-            isRaining = true;
-            glutPostRedisplay();
-            break;
-
-        glutPostRedisplay();
-	}
+        }
+    }
 }
+
+void display()
+{
+    displayRakib();
+    rakib = true;
+}
+
+
 
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);          // Initialize GLUT
@@ -2008,10 +3887,23 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
 	gluOrtho2D(-90,90,-30,150);                      // Our own OpenGL initialization
 	glutTimerFunc(20, update, 0);
-	//glutTimerFunc(2000, sceenUpdateRain, 0);
-	//glutTimerFunc(4000, sceenUpdateNight, 0);
-	glutKeyboardFunc(handleKeypress);
-    glutMouseFunc(handleMouse);
+
+	//glutTimerFunc(2000, sceenUpdate, 0);
+	//glutTimerFunc(4000, sceenUpdate, 0);
+
+    glutKeyboardFunc(handleKeypressR);
+    glutMouseFunc(handleMouseR);
+
+    //rakib
+
+glutTimerFunc(20, updatecloud,0);
+glutTimerFunc(30, updatesun, 0);
+glutTimerFunc(20, updatecar, 0);
+glutTimerFunc(20, updatecar2, 0);
+glutTimerFunc(20,updatewinwheell,0);
+glutTimerFunc(20, updateboat, 0);
+//rakib----end
+
 	glutMainLoop();                 // Enter the event-processing loop
 	return 0;
 }
