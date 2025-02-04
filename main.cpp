@@ -6659,10 +6659,8 @@ int main(int argc, char** argv) {
 	gluOrtho2D(-90,90,-30,150);                      // Our own OpenGL initialization
 	glutTimerFunc(20, update, 0);
 
+	//fahad
     glutTimerFunc(20, updateF, 0);
-
-	//glutTimerFunc(2000, sceenUpdate, 0);
-	//glutTimerFunc(4000, sceenUpdate, 0);
 
     glutKeyboardFunc(handleKeypressR);
     glutMouseFunc(handleMouseR);
@@ -6677,6 +6675,10 @@ glutTimerFunc(20,updatewinwheell,0);
 glutTimerFunc(20, updateboat, 0);
 //rakib----end
 
+//siam
+glutTimerFunc(20, carUpdate, 0);
+glutTimerFunc(20, updatewinwheellS, 0); //Add a timer
+glutTimerFunc(20, boatUpdate, 0);
 	glutMainLoop();                 // Enter the event-processing loop
 	return 0;
 }
