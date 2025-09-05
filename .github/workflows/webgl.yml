@@ -1,0 +1,30 @@
+name: Build WebGL and deploy to Pages
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: emscripten/emsdk:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build (GLFW/WebGL2)
+        run: |
+          mkdir -p docs
+          emcc main.cpp -O3 -std=c++17 \
+            -sUSE_GLFW=3 -sUSE_WEBGL2=1 -sFULL_ES3=1 \
+            -sALLOW_MEMORY_GROWTH=1 \
+            -o docs/index.html
+      - name: Commit docs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add docs
+          git commit -m "Auto Web build" || echo "No changes"
+          git push
